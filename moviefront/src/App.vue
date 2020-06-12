@@ -5,6 +5,7 @@
       <span v-if="isLogin">
         <router-link to="/accounts/logout" @click.native="logout">로그아웃</router-link> |
         <router-link to="/community/create">게시글 작성</router-link> |
+        <router-link to="/community/movie">무비</router-link> |
       </span>
       <span v-else>
         <router-link to="/accounts/login">로그인</router-link> |
