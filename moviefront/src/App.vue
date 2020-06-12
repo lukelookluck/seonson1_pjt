@@ -12,7 +12,7 @@
         <router-link to="/accounts/signup">회원가입</router-link> |
       </span>
     </div>
-    <router-view @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
+    <router-view @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
   </div>
 </template>
 
@@ -25,7 +25,8 @@ export default {
   name: 'App',
   data() {
     return {
-      isLogin: false
+      isLogin: false,
+
     }
   },
   created() {
@@ -90,6 +91,23 @@ export default {
       axios.post(`${BACK_URL}/community/create/`, articleData, reqeustHeaders)
       .then(res => {
         this.$router.push({name: 'ArticleListView'})
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.response.data)
+
+      })
+    },
+    likeMovie(likeMovieData) {
+      const reqeustHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      this.likeMovieData = likeMovieData
+      // console.log(this.likeMovieData)
+      axios.post(`${BACK_URL}/accounts/like/`, this.likeMovieData, reqeustHeaders)
+      .then(res => {
         console.log(res.data)
       })
       .catch(err => {

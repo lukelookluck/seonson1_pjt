@@ -19,6 +19,7 @@ def index(request):
 @permission_classes([IsAuthenticated])
 def create(request):
     serializer = ArticleSerializer(data=request.data)
+    print(request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data)

@@ -15,9 +15,10 @@
         indicators
         img-width="300"
         img-height="100"
-        
       >
-        <b-carousel-slide v-for="movie in movies" :key="movie.id" :caption="movie.title" :img-src="'https://image.tmdb.org/t/p/original/'+ movie.backdrop_path">{{ movie.title }}</b-carousel-slide>
+        <b-carousel-slide v-for="movie in movies" :key="movie.id"  :caption="movie.title" :img-src="'https://image.tmdb.org/t/p/original/'+ movie.backdrop_path">
+          <button @click="like(movie)" >조아요</button>
+        </b-carousel-slide>
       </b-carousel>
     </div>
   </div>
@@ -33,28 +34,35 @@ export default {
   name: "MovieView",
   data() {
     return {
-      movies: []
+      movies: [],
+      likeData: {
+        like_movie: null,
+      }
     };
   },
   methods: {
     getMovies() {
-      console.log(API_KEY);
+      // console.log(API_KEY);
       axios
         .get(BACK_URL, {
           params: {
             api_key: API_KEY,
-            language: "ko-kr",
+            language: "ko",
             page: "1"
           }
         })
         .then(res => {
           this.movies = res.data.results;
-          console.log(this.movies);
           console.log(res.data.results);
         })
         .catch(err => {
           console.log(err.data);
         });
+    },
+    like(movie) {
+      console.log(movie.id)
+      this.likeData.like_movie = movie.id
+      this.$emit("submit-like-movie", this.likeData)
     }
   }
 };
