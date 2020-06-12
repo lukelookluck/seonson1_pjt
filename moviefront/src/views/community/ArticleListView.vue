@@ -3,7 +3,7 @@
     <h1>게시글 목록</h1>
     <div class="overflow-auto container">
       <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" hover >
-        
+    
       </b-table>
       <hr>
       <b-pagination

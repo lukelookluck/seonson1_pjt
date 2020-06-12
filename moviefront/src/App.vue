@@ -6,18 +6,22 @@
         <router-link to="/accounts/logout" @click.native="logout">로그아웃</router-link> |
         <router-link to="/community/create">게시글 작성</router-link> |
         <router-link to="/community/movie">무비</router-link> |
+        <!-- <router-link to="/community/movie/:id">무비</router-link> | -->
+
       </span>
       <span v-else>
         <router-link to="/accounts/login">로그인</router-link> |
         <router-link to="/accounts/signup">회원가입</router-link> |
       </span>
     </div>
+    <!-- <MovieDetailView :movie="movie"/> -->
     <router-view @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+// import MovieDetailView from './views/community/MovieDetailView.vue'
 
 const BACK_URL = 'http://127.0.0.1:8000'
 
@@ -25,7 +29,8 @@ export default {
   name: 'App',
   data() {
     return {
-      isLogin: false
+      isLogin: false,
+      selectMovie: null,
     }
   },
   created() {
@@ -70,8 +75,8 @@ export default {
     signup(signupData) {
       axios.post(`${BACK_URL}/rest-auth/signup/`, signupData)
       .then(res => {
-        console.log(signupData)
-        console.log(res)
+        // console.log(signupData)
+        // console.log(res)
         this.setCookie(res.data.key)
         this.$router.push('/')
       })
