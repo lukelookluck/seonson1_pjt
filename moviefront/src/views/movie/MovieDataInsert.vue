@@ -63,12 +63,14 @@ export default {
               this.insertData.poster_path = this.movies[movie].poster_path
               this.insertData.backdrop_path = this.movies[movie].backdrop_path
               this.insertData.genres = this.movies[movie].genre_ids
-              this.insertData.like = this.movies[movie].like
-              // console.log("movie",this.movies[movie].genre_ids)
-              console.log("insertData", this.insertData)
-              // this.$emit("submit-movie-data", this.insertData)
+              // this.insertData.like = this.movies[movie].like
+              console.log("genres", this.movies[movie].genre_ids)
+              console.log("genres",this.insertData.genres)
+
+              // console.log("like", this.insertData.like)
+              this.$emit("submit-movie-data", this.insertData)
                 // this.$emit("submit-movie-data", this.movies[movie])
-            }, movie * 7000);
+            }, movie * 10000);
           }
         })
       .catch(err => {
