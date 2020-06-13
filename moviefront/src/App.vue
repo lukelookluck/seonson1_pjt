@@ -15,7 +15,7 @@
         <router-link to="/accounts/signup">회원가입</router-link> |
       </span>
     </div>
-    <router-view @submit-movie-data="insertMovieData" @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
+    <router-view @connect-movie-genre="connectMovieGenre" @submit-genre-data="insertGenreData" @submit-movie-data="insertMovieData" @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
   </div>
 </template>
 
@@ -134,11 +134,41 @@ export default {
 
       })
 
-    }
-  }
+    },
+    insertGenreData(insertData) {
+      const reqeustHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      console.log("APP", insertData)
+      axios.post(`${BACK_URL}/movies/genre_create/`, insertData, reqeustHeaders)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.response)
 
-  
+      })
+    },
+    connectMovieGenre(insertData) {
+      const reqeustHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      axios.post(`${BACK_URL}/movies/connect/`, insertData, reqeustHeaders)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.response.data)
+
+      })
+    },
+  }
 }
+  
 </script>
 
 

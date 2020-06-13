@@ -3,6 +3,7 @@ from django.conf import settings
 
 # Create your models here.
 class Genre(models.Model):
+    db_id = models.TextField(primary_key=True)
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -10,6 +11,7 @@ class Genre(models.Model):
 
 
 class Movie(models.Model):
+    # db_id = models.TextField(primary_key=True)
     title = models.CharField(max_length=100)
     original_title = models.CharField(max_length=100)
     release_date = models.DateField()
@@ -20,7 +22,7 @@ class Movie(models.Model):
     overview = models.TextField(blank=True)
     original_language = models.CharField(max_length=10)
     poster_path = models.CharField(max_length=100)
-    backdrop_path = models.CharField(max_length=100, default='')
-    genres = models.ManyToManyField(Genre, related_name='movies')
+    backdrop_path = models.CharField(max_length=100, default='', null=True)
+    genre_ids = models.ManyToManyField(Genre, related_name='movies')
     like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_user')
 

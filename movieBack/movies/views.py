@@ -19,20 +19,31 @@ def movies_list(request):
 @permission_classes([IsAuthenticated])
 def movie_create(request):
     serializer = MovieSerializer(data=request.data)
-    print(request.data)
+    print("+++++++++++++++++++++++++", request.data.get('genre_ids'))
+    print(serializer)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data)
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def update(request):
-#     serializer = MovieSerializer(instance=request.data.id data=request.data)
-#     print(request.data)
-#     if serializer.is_valid(raise_exception=True):
-#         serializer.save()
-#         return Response(serializer.data)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def movie_genre_connect(request):
+    serializer = MovieSerializer(instance=request.data, data=request.data, partial=True)
+    print("request.data", request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def genre_create(request):
+    serializer = GenreSerializer(data=request.data)
+    print(request.data.get('id'))
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data)
 
 
 @api_view(['GET'])
