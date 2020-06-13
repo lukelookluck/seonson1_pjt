@@ -14,8 +14,12 @@
         <router-link to="/accounts/signup">회원가입</router-link> |
       </span>
     </div>
+<<<<<<< HEAD
     <!-- <MovieDetailView :movie="movie"/> -->
     <router-view @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
+=======
+    <router-view @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
+>>>>>>> 86074f28bd4b1506c09a327ddd3ae206893da687
   </div>
 </template>
 
@@ -30,7 +34,11 @@ export default {
   data() {
     return {
       isLogin: false,
+<<<<<<< HEAD
       selectMovie: null,
+=======
+
+>>>>>>> 86074f28bd4b1506c09a327ddd3ae206893da687
     }
   },
   created() {
@@ -95,6 +103,23 @@ export default {
       axios.post(`${BACK_URL}/community/create/`, articleData, reqeustHeaders)
       .then(res => {
         this.$router.push({name: 'ArticleListView'})
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.response.data)
+
+      })
+    },
+    likeMovie(likeMovieData) {
+      const reqeustHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      this.likeMovieData = likeMovieData
+      // console.log(this.likeMovieData)
+      axios.post(`${BACK_URL}/accounts/like/`, this.likeMovieData, reqeustHeaders)
+      .then(res => {
         console.log(res.data)
       })
       .catch(err => {
