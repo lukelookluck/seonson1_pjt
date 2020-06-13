@@ -16,17 +16,14 @@
         img-width="300"
         img-height="100"
       >
-<<<<<<< HEAD
 
         <b-carousel-slide v-for="movie in movies" :key="movie.id" :caption="movie.title" :img-src="'https://image.tmdb.org/t/p/original/'+ movie.backdrop_path">
           <button @click="detail(movie)">123</button>
           <button @click="like(movie)" >조아요</button>
         </b-carousel-slide>
 
-=======
         
 
->>>>>>> 86074f28bd4b1506c09a327ddd3ae206893da687
       </b-carousel>
     </div>
   </div>
@@ -44,13 +41,10 @@ export default {
   data() {
     return {
       movies: [],
-<<<<<<< HEAD
       selectedMovie: null,
-=======
       likeData: {
         like_movie: null,
       }
->>>>>>> 86074f28bd4b1506c09a327ddd3ae206893da687
     };
   },
   methods: {
@@ -66,18 +60,14 @@ export default {
         })
         .then(res => {
           this.movies = res.data.results;
-<<<<<<< HEAD
           console.log(this.movies);
           // console.log(res.data.results);
-=======
           console.log(res.data.results);
->>>>>>> 86074f28bd4b1506c09a327ddd3ae206893da687
         })
         .catch(err => {
           console.log(err.data);
         });
     },
-<<<<<<< HEAD
     detail(movie){
       console.log(movie.id)
       this.selectedMovie = movie
@@ -92,15 +82,15 @@ export default {
         }
       })
       // this.$router.push(`community/movie/${movie.id}`, movie)
-=======
+    },
+
     like(movie) {
       console.log(movie.id)
       this.likeData.like_movie = movie.id
       this.$emit("submit-like-movie", this.likeData)
->>>>>>> 86074f28bd4b1506c09a327ddd3ae206893da687
     }
   }
-};
+}
 </script>
 
 <style>
