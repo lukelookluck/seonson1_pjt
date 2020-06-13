@@ -6,6 +6,7 @@ import ArticleCreateView from '../views/community/ArticleCreateView.vue'
 import ArticleListView from '../views/community/ArticleListView.vue'
 import MovieView from '../views/community/MovieView.vue'
 import MovieDetailView from '../views/community/MovieDetailView.vue'
+import MovieDataInsert from '../views/movie/MovieDataInsert.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ Vue.use(VueRouter)
     path: '/community/movie/:id',
     name: 'MovieDetailView',
     component: MovieDetailView
+  },
+  {
+    path: '/movie/MovieDataInsert',
+    name: 'MovieDataInsert',
+    component: MovieDataInsert
   },
 
 ]

@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">홈</router-link> |
+      <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> |
       <span v-if="isLogin">
         <router-link to="/accounts/logout" @click.native="logout">로그아웃</router-link> |
         <router-link to="/community/create">게시글 작성</router-link> |
@@ -14,7 +15,7 @@
         <router-link to="/accounts/signup">회원가입</router-link> |
       </span>
     </div>
-    <router-view @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
+    <router-view @submit-movie-data="insertMovieData" @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
   </div>
 </template>
 
@@ -106,9 +107,9 @@ export default {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
-      this.likeMovieData = likeMovieData
+      // this.likeMovieData = likeMovieData
       // console.log(this.likeMovieData)
-      axios.post(`${BACK_URL}/accounts/like/`, this.likeMovieData, reqeustHeaders)
+      axios.post(`${BACK_URL}/accounts/like/`, likeMovieData, reqeustHeaders)
       .then(res => {
         console.log(res.data)
       })
@@ -116,6 +117,23 @@ export default {
         console.log(err.response.data)
 
       })
+    },
+    insertMovieData(insertData) {
+      const reqeustHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      console.log("APP", insertData)
+      axios.post(`${BACK_URL}/movies/create/`, insertData, reqeustHeaders)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.response.data)
+
+      })
+
     }
   }
 
