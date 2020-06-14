@@ -69,9 +69,9 @@ export default {
         });
     },
     detail(movie){
-      console.log(movie.id)
+      // console.log(movie.id)
       this.selectedMovie = movie
-      console.log(this.selectedMovie)
+      // console.log(this.selectedMovie)
       // this.movie
       this.$router.push({
         name: 'MovieDetailView',
