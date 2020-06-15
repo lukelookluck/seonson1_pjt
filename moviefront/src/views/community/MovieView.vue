@@ -29,6 +29,8 @@
               <small class="text-muted">{{ movie.release_date.substring(0,4) }}</small>
             </p>
           <button @click="like(movie)" >조아요</button>
+          <button @click="detail(movie)">123</button>
+
 
             <!-- {{ window.getElementById('movie.title') }}asdas -->
             <b-input-group>
@@ -57,7 +59,6 @@
       >
 
         <b-carousel-slide v-for="movie in movies" :key="movie.id" :caption="movie.title" :img-src="'https://image.tmdb.org/t/p/original/'+ movie.poster_path">
-          <button @click="detail(movie)">123</button>
         </b-carousel-slide>
 
         
@@ -108,10 +109,30 @@ export default {
       });
   },
   methods: {
-    detail(movie) {
-      console.log(movie.id);
-      this.selectedMovie = movie;
-      console.log(this.selectedMovie);
+    // getMovies() {
+    //   // console.log(API_KEY);
+    //   axios
+    //     .get(BACK_URL, {
+    //       params: {
+    //         api_key: API_KEY,
+    //         language: "ko",
+    //         page: "1"
+    //       }
+    //     })
+    //     .then(res => {
+    //       this.movies = res.data.results;
+    //       console.log(this.movies);
+    //       // console.log(res.data.results);
+    //       console.log(res.data.results);
+    //     })
+    //     .catch(err => {
+    //       console.log(err.data);
+    //     });
+    // },
+    detail(movie){
+      // console.log(movie.id)
+      this.selectedMovie = movie
+      // console.log(this.selectedMovie)
       // this.movie
       this.$router.push({
         name: "MovieDetailView",
