@@ -9,23 +9,30 @@ class GenreSerializer(serializers.ModelSerializer):
         # read_only_fields = ('db_id',)
 
     
-
-
 class MovieSerializer(serializers.ModelSerializer):
-    geres = GenreSerializer
+    genre_ids = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Movie
         fields = '__all__'
-        read_only_fields = ('like',)
+        # read_only_fields = ('like',)
 
+    
     # def create(self, validated_data):
     #     # print("asdasndkjasndkjasndkj",validated_data.get('genre_ids'))    
     #     # self.genres = validated_data.get('genre_ids')
     #     return Genre(*validated_data)
 
-    def update(self, instance, validated_data):
-        print("asdasndkjasndkjasndkj",validated_data.get('genre_ids'))
-        instance.genres = validated_data.get('genre_ids')
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     print("asdasndkjasndkjasndkj",validated_data.get('like'))
+    #     instance['like'] = (validated_data.get('like'))
+    #     print(instance)
+    #     # instance.save()
+    #     return instance
+
+
+class MovieLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('id',)
+        read_only_fields = ('like',)

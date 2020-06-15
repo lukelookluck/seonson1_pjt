@@ -11,5 +11,5 @@ urlpatterns = [
     # path('<int:movie_pk>/update/', views.update, name='update'),
     # path('<int:movie_pk>/delete/', views.delete, name='delete'),
     path('<int:movie_pk>/', views.movie_detail, name='movie_detail'),
-    # path('<int:movie_pk>/like/', views.like, name='like'),
+    path('like/', views.movie_like, name='movie_like'),
 ]

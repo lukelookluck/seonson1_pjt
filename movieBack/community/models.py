@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from movies.models import Movie
 
 class Article(models.Model):
     title = models.CharField(max_length=200)
@@ -9,6 +10,7 @@ class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     LIKE = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='LIKE')
     DISLIKE = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='DISLIKE')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, default='')
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

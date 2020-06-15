@@ -2,11 +2,11 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">홈</router-link> |
-      <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> |
+      <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
       <span v-if="isLogin">
         <router-link to="/accounts/logout" @click.native="logout">로그아웃</router-link> |
         <router-link to="/community/create">게시글 작성</router-link> |
-        <router-link to="/community/movie">무비</router-link> |
+        <router-link to="/community/movie">영화 평가하기</router-link> |
         <!-- <router-link to="/community/movie/:id">무비</router-link> | -->
 
       </span>
@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       isLogin: false,
+      like_count: null,
     }
   },
   created() {
@@ -108,8 +109,8 @@ export default {
         }
       }
       // this.likeMovieData = likeMovieData
-      // console.log(this.likeMovieData)
-      axios.post(`${BACK_URL}/accounts/like/`, likeMovieData, reqeustHeaders)
+      // console.log(likeMovieData)
+      axios.post(`${BACK_URL}/movies/like/`, likeMovieData, reqeustHeaders)
       .then(res => {
         console.log(res.data)
       })

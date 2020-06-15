@@ -10,8 +10,14 @@ from .serializers import GenreSerializer, MovieSerializer
 
 @api_view(['GET'])
 def movies_list(request):
-    movies = Movie.objects.order_by('-pk')
-    serializer = MovieSerializer(Movie, many=True)
+    movies = Movie.objects.all()[:5]
+
+    # if request.user.is_authenticated:
+    #     if request
+
+
+
+    serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
 
@@ -24,6 +30,32 @@ def movie_create(request):
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def movie_like(request):
+    print(request.data['id'])
+    # request.data['like'] = request.user
+    movie = get_object_or_404(Movie, pk=request.data['id'])
+    if movie.like.filter(pk=request.user.pk).exists():
+        movie.like.remove(request.user)
+        liked = False
+    else:
+        movie.like.add(request.user)
+        liked = True
+    
+    context = {
+        'liked': liked,
+        'like_user_count': request.user.like_user.count(),
+        'like_count': movie.like.count(),
+    }
+
+    return Response(context)
+    # if serializer.is_valid(raise_exception=True):
+    #     serializer.save(data = request.data['id'])
+    #     return Response(serializer.data)
+
 
 
 @api_view(['POST'])

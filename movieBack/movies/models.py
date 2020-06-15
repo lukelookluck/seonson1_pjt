@@ -5,7 +5,6 @@ from django.conf import settings
 class Genre(models.Model):
     db_id = models.TextField(primary_key=True)
     name = models.CharField(max_length=100)
-
     def __str__(self):
         return self.name
 
@@ -22,7 +21,8 @@ class Movie(models.Model):
     overview = models.TextField(blank=True)
     original_language = models.CharField(max_length=10)
     poster_path = models.CharField(max_length=100)
-    backdrop_path = models.CharField(max_length=100, default='', null=True)
+    backdrop_path = models.CharField(max_length=100, default='')
     genre_ids = models.ManyToManyField(Genre, related_name='movies')
     like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_user')
+    rate = models.IntegerField(default=0)
 
