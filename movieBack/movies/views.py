@@ -4,19 +4,15 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from accounts.models import User
-from .models import Genre, Movie
+from .models import Genre, Movie, UserRateMovie
 from .serializers import GenreSerializer, MovieSerializer, UserRateMovieSerializer
+from django.core import serializers
+from django.db.models import Q
 
 
 @api_view(['GET'])
 def movies_list(request):
     movies = Movie.objects.all()[:20]
-
-    # if request.user.is_authenticated:
-    #     if request
-
-
-
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
@@ -50,10 +46,7 @@ def rate_movie(request):
     user = request.data
     user['user'] = request.user.id
     serializer = UserRateMovieSerializer(data=user)
-    print("request.data", user)
-    print(serializer)
     if serializer.is_valid(raise_exception=True):
-        print('asdas')
         serializer.save()
         return Response(serializer.data)
 
@@ -62,7 +55,6 @@ def rate_movie(request):
 @permission_classes([IsAuthenticated])
 def genre_create(request):
     serializer = GenreSerializer(data=request.data)
-    print(request.data.get('id'))
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data)
@@ -74,3 +66,43 @@ def movie_detail(request, movie_pk):
     serializer = MovieSerializer(article)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def movie_recomand(request):
+    if request.user.rated_user.count():
+        # 유저가 좋아요한 영화들의 장르들 쿼리셋
+        print("꺄륵")
+        temp_list = request.user.rate_user.values('genre_ids')
+        # 그 장르들이 있는 영화들의 쿼리셋 중 랜덤으로 10개
+        temp_movies = Movie.objects.filter(genre_ids__in=temp_list).order_by('?')[:10]
+
+    else:
+        temp_movies = Movie.objects.order_by('?')[:10]
+
+    print(temp_movies)
+
+    serializer = MovieSerializer(temp_movies, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def movie_recomand2(request):
+    if request.user.rated_user.count():
+        # 사용자가 3점 이상 준 영화들 쿼리셋
+        temp_list = request.user.rated_user.filter(value__gte=3).values('movie')
+        # 그 장르에 3점 이상 준 유저들 쿼리셋
+        temp_user = UserRateMovie.objects.filter(movie__in=temp_list, value__gte=3).values('user')
+        # 그 유저들이 3점 이상 준 영화 목록들 중 사용자가 평가하지 않은 영화들 id 쿼리셋
+        temp_movies2 = UserRateMovie.objects.filter(Q(user__in=temp_user) & Q(value__gte=3) & ~Q(movie__in=temp_list)).values('movie')
+        # 찾은 영화들 id 쿼리셋에 해당되는 영화들 쿼리셋
+        temp_movies = Movie.objects.filter(id__in=temp_movies2)[:10]
+
+    else:
+        temp_movies = Movie.objects.order_by('?')[:10]
+
+    print(temp_movies)
+
+    serializer = MovieSerializer(temp_movies, many=True)
+    return Response(serializer.data)

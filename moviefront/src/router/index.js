@@ -7,6 +7,12 @@ import ArticleListView from '../views/community/ArticleListView.vue'
 import MovieView from '../views/community/MovieView.vue'
 import MovieDetailView from '../views/community/MovieDetailView.vue'
 import MovieDataInsert from '../views/movie/MovieDataInsert.vue'
+import FirstView from '../views/accounts/FirstView.vue'
+import MovieRecommandView from '../views/movie/MovieRecommandView.vue'
+import eachCommunityView from '../views/community/eachCommunityView.vue'
+
+
+
 
 Vue.use(VueRouter)
 
@@ -27,12 +33,12 @@ Vue.use(VueRouter)
     component: ArticleCreateView
   },
   {
-    path: '/',
+    path: '/asdasda',
     name: 'ArticleListView',
     component: ArticleListView
   },
   {
-    path: '/community/movie',
+    path: '/',
     name: 'MovieView',
     component: MovieView
   },
@@ -45,6 +51,21 @@ Vue.use(VueRouter)
     path: '/movie/MovieDataInsert',
     name: 'MovieDataInsert',
     component: MovieDataInsert
+  },
+  {
+    path: '/accounts/first',
+    name: 'FirstView',
+    component: FirstView
+  },
+  {
+    path: '/movie/recomand',
+    name: 'MovieRecommandView',
+    component: MovieRecommandView
+  },
+  {
+    path: '/movie/artcles',
+    name: 'eachCommunityView',
+    component: eachCommunityView
   },
 
 ]

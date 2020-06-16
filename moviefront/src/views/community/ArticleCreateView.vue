@@ -16,6 +16,10 @@
         <label>내용</label>
         <textarea class="form-control" placeholder="내용" rows="5" v-model="articleData.content"></textarea>
       </div>
+      <div class="form-group">
+        <label>영화id값</label>
+        <input class="form-control" v-model="articleData.movie">
+      </div>
       <button type="button" @click="create" class="btn btn-primary">작성하기</button>
     </form>
   </div>
@@ -28,7 +32,8 @@ export default {
     return {
       articleData: {
         title: null,
-        content: null
+        content: null,
+        movie: null,
       }
     };
   },

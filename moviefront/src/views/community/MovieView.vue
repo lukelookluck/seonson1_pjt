@@ -9,10 +9,10 @@
         <li>{{ movie.title }}</li>
       </ul>
     </div>-->
-    <div v-for="(movie, idx) in movies" :key="movie.id" :movie="movie" class="card mx-auto" style="max-width: 50%;">
+    <div v-for="(movie, idx) in movie2" :key="movie.id" :movie="movie" class="card mx-auto" style="max-width: 50%;">
       <div class="row no-gutters">
         <div class="col-md-4">
-          <a  href="#" @click="detail(movie)">
+          <a  href="#" @click="detail(movie)"  >
             <img
               
               :src="'https://image.tmdb.org/t/p/original/'+ movie.poster_path"
@@ -20,7 +20,7 @@
               alt="..."
             />
           </a>
-          <!-- {{ movies }} -->
+          <!-- {{ movie }} -->
         </div>
         <div class="col-md-8">
           <div class="card-body text-left">
@@ -68,8 +68,8 @@
 </template>
 
 <script>
-// import axios from "axios";
-
+// import MovieDetailView from "./MovieDetailView.vue";
+// import VideoListItem from './VideoListItem.vue'
 // const API_KEY = process.env.VUE_APP_API_KEY_TMDB
 // const BACK_URL = "http://127.0.0.1:8000";
 
@@ -81,7 +81,7 @@ export default {
   },
   data() {
     return {
-      selectedMovie: null,
+      movie2: this.movies,
       likeData: {
         id: null,
         like: null
@@ -94,6 +94,9 @@ export default {
       
     };
   },
+  // components: {
+  //   MovieDetailView,
+  // },
   // computed: {
   //   release_year() {
   //     return 
@@ -105,8 +108,8 @@ export default {
   },
   methods: {
     detail(movie){
-      // console.log(movie.id)
-      this.selectedMovie = movie
+      console.log(movie.id)
+      this.$emit("submit-detail-movie", movie);
       // axios.get(`${BACK_URL}/movies/${movie.id}`)
       // .then(res => {
       //   console.log(res.data)
@@ -115,13 +118,6 @@ export default {
       //   console.log(err.data)
       // })
 
-      this.$router.push({
-        name: 'MovieDetailView',
-        params: {
-          id: movie.id,
-          selectedMovie: movie
-        }
-      })
     },
     like(movie) {
       this.likeData.id = movie.id;
