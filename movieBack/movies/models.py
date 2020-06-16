@@ -5,8 +5,14 @@ from django.conf import settings
 class Genre(models.Model):
     db_id = models.TextField(primary_key=True)
     name = models.CharField(max_length=100)
+
+
     def __str__(self):
         return self.name
+    
+    # def __unicode__(self):
+        # return self.db_id
+
 
 
 class Movie(models.Model):
@@ -24,5 +30,12 @@ class Movie(models.Model):
     backdrop_path = models.CharField(max_length=100, default='')
     genre_ids = models.ManyToManyField(Genre, related_name='movies')
     like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_user')
-    rate = models.IntegerField(default=0)
+    rate = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='rate_user', through='UserRateMovie')
+    rate_value = models.IntegerField(default=0)
+
+
+class UserRateMovie(models.Model):
+    value = models.IntegerField(default=0)
+    movie = models.ForeignKey(Movie, related_name='rated_movie', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='rated_user', on_delete=models.CASCADE)
 

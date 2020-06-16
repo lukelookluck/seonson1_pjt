@@ -2,7 +2,7 @@
   <div>
     <!-- <button @click="insertMovieData">영화데이터db저장</button> -->
     <span>장르 저장에 3분, 영화 목록 20개당 3.5초 소요, 현재 2000개 저장으로 6분 소요, 총 9분 정도 소요됨</span>
-    <button @click="insertGenreData">영화db저장 실행</button>
+    <button @click="insertMovieData">영화db저장 실행</button>
     <!-- <button @click="connectGenreMovie">영화랑 장르랑</button> -->
   </div>
 </template>
@@ -50,7 +50,7 @@ export default {
     insertMovieData() {
       let my_sec = 0
       // my_sec x일 경우, 20*x 개
-      while (my_sec < 100) {
+      while (my_sec < 1) {
         my_sec++
         setTimeout(() => {
           axios.get(BACK_URL_MOVIE_DATA, {

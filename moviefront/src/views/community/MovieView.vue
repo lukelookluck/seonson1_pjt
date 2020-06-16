@@ -9,12 +9,12 @@
         <li>{{ movie.title }}</li>
       </ul>
     </div>-->
-    <div v-for="movie in movies" :key="movie.id" class="card mx-auto" style="max-width: 50%;">
+    <div v-for="(movie, idx) in movies" :key="movie.id" :movie="movie" class="card mx-auto" style="max-width: 50%;">
       <div class="row no-gutters">
         <div class="col-md-4">
-          <a href>
+          <a  href="#" @click="detail(movie)">
             <img
-              @click="detail(movie)"
+              
               :src="'https://image.tmdb.org/t/p/original/'+ movie.poster_path"
               class="card-img"
               alt="..."
@@ -28,20 +28,17 @@
             <p class="card-text">
               <small class="text-muted">{{ movie.release_date.substring(0,4) }}</small>
             </p>
+            {{ movies[idx].like }}
           <button @click="like(movie)" >조아요</button>
-          <button @click="detail(movie)">123</button>
 
 
             <!-- {{ window.getElementById('movie.title') }}asdas -->
             <b-input-group>
-              <b-form-rating @change="rating(movie)" v-model="movie.rate" color="#ff8800" size="lg" no-border>
+              <b-form-rating @change="rating(movie)" v-model="movie.rate_value" color="#ff8800" size="lg" no-border>
               </b-form-rating>
-              <!-- <b-input-group-append> -->
-                <!-- <b-input-group-text
-                  class="justify-content-center"
-                  style="min-width: 3em;"
-                >{{ value }}</b-input-group-text> -->
-              <!-- </b-input-group-append> -->
+              <b-input-group-append>
+                <b-input-group-text>{{ movie.rate_value }}</b-input-group-text>
+              </b-input-group-append>
             </b-input-group>
             <!-- <p class="card-text">{{ movie.overview }}</p> -->
           </div>
@@ -59,33 +56,41 @@
       >
 
         <b-carousel-slide v-for="movie in movies" :key="movie.id" :caption="movie.title" :img-src="'https://image.tmdb.org/t/p/original/'+ movie.poster_path">
+          <button @click="detail(movie)">123</button>
+
         </b-carousel-slide>
 
         
 
       </b-carousel>
-    </div>-->
+    </div> -->
   </div>
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
 // const API_KEY = process.env.VUE_APP_API_KEY_TMDB
-const BACK_URL = "http://127.0.0.1:8000";
+// const BACK_URL = "http://127.0.0.1:8000";
 
 
 export default {
   name: "MovieView",
+  props: {
+    movies: Array,
+  },
   data() {
     return {
-      movies: [],
       selectedMovie: null,
       likeData: {
         id: null,
         like: null
       },
-      newValue: null, 
+      rateData: {
+        user: null,
+        movie: null,
+        value: null,
+      }
       
     };
   },
@@ -96,61 +101,39 @@ export default {
   // },
 
   created() {
-    axios
-      .get(`${BACK_URL}/movies/`)
-      .then(res => {
-        this.movies = res.data;
-        console.log(this.movies);
-        // console.log(res.data.re  sults);
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err.data);
-      });
+    
   },
   methods: {
-    // getMovies() {
-    //   // console.log(API_KEY);
-    //   axios
-    //     .get(BACK_URL, {
-    //       params: {
-    //         api_key: API_KEY,
-    //         language: "ko",
-    //         page: "1"
-    //       }
-    //     })
-    //     .then(res => {
-    //       this.movies = res.data.results;
-    //       console.log(this.movies);
-    //       // console.log(res.data.results);
-    //       console.log(res.data.results);
-    //     })
-    //     .catch(err => {
-    //       console.log(err.data);
-    //     });
-    // },
     detail(movie){
       // console.log(movie.id)
       this.selectedMovie = movie
-      // console.log(this.selectedMovie)
-      // this.movie
+      // axios.get(`${BACK_URL}/movies/${movie.id}`)
+      // .then(res => {
+      //   console.log(res.data)
+      // })
+      // .catch(err => {
+      //   console.log(err.data)
+      // })
+
       this.$router.push({
-        name: "MovieDetailView",
+        name: 'MovieDetailView',
         params: {
           id: movie.id,
           selectedMovie: movie
-          // selectedMovie: x,
         }
-      });
-      // this.$router.push(`community/movie/${movie.id}`, movie)
+      })
     },
     like(movie) {
       this.likeData.id = movie.id;
-      console.log(this.likeData);
+      this.newValue++
       this.$emit("submit-like-movie", this.likeData);
+      
+      
     },
     rating(rateValue) {
-      console.log(rateValue, rateValue.rate)
+      this.rateData.movie = rateValue.id
+      this.rateData.value = rateValue.rate_value
+      this.$emit('submit-rate-value', this.rateData)
 
     }
     

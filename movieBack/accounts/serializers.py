@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from movies.serializers import MovieSerializer
+from movies.serializers import MovieSerializer, UserRateMovieSerializer
 
 
 User = get_user_model()
@@ -8,6 +8,8 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     like_user = MovieSerializer(many=True, read_only=True)
+    rate_user = MovieSerializer(many=True, read_only=True)
+    rated_user = UserRateMovieSerializer(many=True, read_only=True)
 
     class Meta:
         model = User

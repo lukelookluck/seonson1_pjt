@@ -15,12 +15,13 @@
         <router-link to="/accounts/signup">회원가입</router-link> |
       </span>
     </div>
-    <router-view @connect-movie-genre="connectMovieGenre" @submit-genre-data="insertGenreData" @submit-movie-data="insertMovieData" @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
+    <router-view  @submit-rate-value="rateMovie" :movies="movies" @submit-genre-data="insertGenreData" @submit-movie-data="insertMovieData" @submit-like-movie="likeMovie" @submit-article-data="create" @submit-login-data="login" @submit-signup-data="signup" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+// import Vue from 'vue'
 // import MovieDetailView from './views/community/MovieDetailView.vue'
 
 const BACK_URL = 'http://127.0.0.1:8000'
@@ -31,6 +32,7 @@ export default {
     return {
       isLogin: false,
       like_count: null,
+      movies: [],
     }
   },
   created() {
@@ -40,6 +42,16 @@ export default {
     else {
       this.isLogin = false
     }
+    axios.get(`${BACK_URL}/movies/`)
+      .then(res => {
+        this.movies = res.data;
+        console.log(this.movies);
+        // console.log(res.data.re  sults);
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err.data);
+      });
   },
   methods: {
     setCookie(key) {
@@ -113,9 +125,10 @@ export default {
       axios.post(`${BACK_URL}/movies/like/`, likeMovieData, reqeustHeaders)
       .then(res => {
         console.log(res.data)
+        // Vue.set(vm.movies, indexOfMovies, like)
       })
       .catch(err => {
-        console.log(err.response.data)
+        console.log(err.response)
 
       })
     },
@@ -152,13 +165,14 @@ export default {
 
       })
     },
-    connectMovieGenre(insertData) {
+    rateMovie(insertData) {
       const reqeustHeaders = {
         headers: {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
-      axios.post(`${BACK_URL}/movies/connect/`, insertData, reqeustHeaders)
+      console.log(insertData)
+      axios.post(`${BACK_URL}/movies/rate/`, insertData, reqeustHeaders)
       .then(res => {
         console.log(res.data)
       })

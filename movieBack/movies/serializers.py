@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Genre, Movie
+from .models import Genre, Movie, UserRateMovie
+from accounts.models import User
+# from accounts.serializers import UserSerializer
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -9,30 +11,23 @@ class GenreSerializer(serializers.ModelSerializer):
         # read_only_fields = ('db_id',)
 
     
+class UserRateMovieSerializer(serializers.ModelSerializer):
+    # user = UserSerializer(many=True, read_only=True)
+    class Meta:
+        model = UserRateMovie
+        fields = '__all__'
+        # read_only_fields = ('user', )
+    # def create(self, validated_data):
+    #     return UserRateMovie.objects.create(**validated_data)
+
+
 class MovieSerializer(serializers.ModelSerializer):
-    genre_ids = serializers.StringRelatedField(many=True)
+    # genre_ids = serializers.StringRelatedField(many=True)
+    genre_ids = GenreSerializer(many=True, read_only=True)
+    rated_movie = UserRateMovieSerializer(many=True, read_only=True)
+
 
     class Meta:
         model = Movie
         fields = '__all__'
-        # read_only_fields = ('like',)
-
-    
-    # def create(self, validated_data):
-    #     # print("asdasndkjasndkjasndkj",validated_data.get('genre_ids'))    
-    #     # self.genres = validated_data.get('genre_ids')
-    #     return Genre(*validated_data)
-
-    # def update(self, instance, validated_data):
-    #     print("asdasndkjasndkjasndkj",validated_data.get('like'))
-    #     instance['like'] = (validated_data.get('like'))
-    #     print(instance)
-    #     # instance.save()
-    #     return instance
-
-
-class MovieLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ('id',)
-        read_only_fields = ('like',)
+        read_only_fields = ('like', 'rate', )
