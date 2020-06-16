@@ -1,6 +1,6 @@
 <template>
   <div class="container" >
-    <h1>취향분석</h1>
+    <h1>취향분석 - 무한 스크롤 구현 필요할까..</h1>
     <button @click="recomand">취향분석</button>
     <button @click="recomand2">비슷한 취향인 사람은 이걸 봤어요</button>
     

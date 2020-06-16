@@ -1,63 +1,65 @@
 <template>
   <div class="container">
+    <img alt="Vue logo" src="../../../src/assets/unnamed.gif" />
     <h1>Signup</h1>
-    <form class="text-left" >
-      <div class="form-group">
-        <label>username</label>
-        <input
-          class="form-control"
-          type="text"
-          placeholder="username"
-          v-model="signupData.username"
-        />
-        <small id="usernameHelp" class="form-text text-muted">아이디 작성하삼!!</small>
-      </div>
-      <div class="form-group">
-        <label>password</label>
-        <input
-          class="form-control"
-          type="password"
-          placeholder="password"
-          v-model="signupData.password1"
-        />
-        <small id="passwordHelp" class="form-text text-muted">비번 작성하삼!!</small>
-      </div>
-      <div class="form-group">
-        <label>password_confirmation</label>
-        <input
-          class="form-control"
-          type="password"
-          placeholder="password_confirmation"
-          v-model="signupData.password2"
-          @keyup.enter="signup"
-        />
-        <small id="password_confirmationHelp" class="form-text text-muted">비번 똑같이 적으삼!!</small>
-      </div>
-      <button type="button" @click="signup" class="btn btn-primary" >회원가입</button>
-    </form>
+    <div class="text-left">
+      <b-form @submit="signup" v-if="show">
+        <b-form-group id="input-group-1" label="유저 이름:" label-for="input-1">
+          <b-form-input
+            id="input-1"
+            v-model="signupData.username"
+            type="text"
+            required
+            placeholder="유저 이름을 입력하세요"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-2" label="비밀번호:" label-for="input-2">
+          <b-form-input
+            id="input-2"
+            v-model="signupData.password"
+            type="password"
+            required
+            placeholder="비밀번호를 입력하세요"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-3" label="비밀번호 확인:" label-for="input-3">
+          <b-form-input
+            id="input-3"
+            v-model="signupData.password2"
+            type="password"
+            required
+            placeholder="비밀번호를 입력하세요"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-button type="submit" variant="primary">회원가입</b-button>
+      </b-form>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'Signup',
-    data() {
-        return {
-            signupData: {
-                username: null,
-                password1: null,
-                password2: null,
-            }
-        }
-    },
-    methods: {
-        signup() {
-            this.$emit('submit-signup-data', this.signupData)
-        }
+  name: "Signup",
+  data() {
+    return {
+      signupData: {
+        username: null,
+        password1: null,
+        password2: null
+      },
+      show: true
+    };
+  },
+  methods: {
+    signup() {
+      this.$emit("submit-signup-data", this.signupData);
     }
-}
+  }
+};
 </script>
 
 <style>
-
 </style>

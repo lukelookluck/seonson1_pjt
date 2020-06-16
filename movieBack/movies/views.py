@@ -11,8 +11,16 @@ from django.db.models import Q
 
 
 @api_view(['GET'])
-def movies_list(request):
-    movies = Movie.objects.all()[:20]
+@permission_classes([IsAuthenticated])
+def movies_list(request, num):
+    print("꺄륵")
+    print(num)
+    A = (num) * 20
+    B = (num + 1) * 20
+    # 유저가 좋아요한 영화들 쿼리셋
+    temp_list = request.user.rate_user.values('id')
+
+    movies = Movie.objects.filter(~Q(id__in=temp_list)).all()[A:B]
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
@@ -43,6 +51,11 @@ def movie_like(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def rate_movie(request):
+    a = UserRateMovie.objects.filter(user=request.user.id, movie=request.data['movie'])
+    print(a)
+    if a:
+        a.delete()
+
     user = request.data
     user['user'] = request.user.id
     serializer = UserRateMovieSerializer(data=user)
@@ -72,7 +85,6 @@ def movie_detail(request, movie_pk):
 def movie_recomand(request):
     if request.user.rated_user.count():
         # 유저가 좋아요한 영화들의 장르들 쿼리셋
-        print("꺄륵")
         temp_list = request.user.rate_user.values('genre_ids')
         # 그 장르들이 있는 영화들의 쿼리셋 중 랜덤으로 10개
         temp_movies = Movie.objects.filter(genre_ids__in=temp_list).order_by('?')[:10]

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>커뮤니티</h1>
+    <h1>커뮤니티 - 수정 필요</h1>
     <form class="text-left">
       <div class="form-group">
         <label>제목</label>

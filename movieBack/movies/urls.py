@@ -4,7 +4,7 @@ from . import views
 app_name='movies'
 
 urlpatterns = [
-    path('', views.movies_list, name='movies_list'),
+    path('<int:num>/', views.movies_list, name='movies_list'),
     path('create/', views.movie_create, name='movie_create'),
     path('genre_create/', views.genre_create, name='genre_create'),
     # path('connect/', views.movie_genre_connect, name='movie_genre_connect'),

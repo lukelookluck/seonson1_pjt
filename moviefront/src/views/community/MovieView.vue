@@ -3,18 +3,20 @@
     <h1>영화 평가하기</h1>
     <!-- <button @click="getMovies">일단 눌러</button> -->
     <hr />
-    <!-- {{ movies }} -->
-    <!-- <div class="container">
-      <ul v-for="movie in movies" :key="movie.id">
-        <li>{{ movie.title }}</li>
-      </ul>
-    </div>-->
-    <div v-for="(movie, idx) in movie2" :key="movie.id" :movie="movie" class="card mx-auto" style="max-width: 50%;">
+    <!-- {{list}} -->
+    <div
+      v-for="(movie, $idx) in list"
+      :key="$idx"
+      :movie="movie"
+      class="card mx-auto"
+      style="max-width: 50%;"
+    >
+  
+
       <div class="row no-gutters">
         <div class="col-md-4">
-          <a  href="#" @click="detail(movie)"  >
+          <a href="#" @click="detail(movie)">
             <img
-              
               :src="'https://image.tmdb.org/t/p/original/'+ movie.poster_path"
               class="card-img"
               alt="..."
@@ -28,14 +30,18 @@
             <p class="card-text">
               <small class="text-muted">{{ movie.release_date.substring(0,4) }}</small>
             </p>
-            {{ movies[idx].like }}
-          <button @click="like(movie)" >조아요</button>
-
+            <!-- {{ movies[$idx].like }} -->
+            <button @click="like(movie)">조아요</button>
 
             <!-- {{ window.getElementById('movie.title') }}asdas -->
             <b-input-group>
-              <b-form-rating @change="rating(movie)" v-model="movie.rate_value" color="#ff8800" size="lg" no-border>
-              </b-form-rating>
+              <b-form-rating
+                @change="rating(movie)"
+                v-model="movie.rate_value"
+                color="#ff8800"
+                size="lg"
+                no-border
+              ></b-form-rating>
               <b-input-group-append>
                 <b-input-group-text>{{ movie.rate_value }}</b-input-group-text>
               </b-input-group-append>
@@ -44,8 +50,10 @@
           </div>
         </div>
       </div>
+
     </div>
 
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     <!-- <div>
       <b-carousel
         id="carousel-fade"
@@ -63,21 +71,28 @@
         
 
       </b-carousel>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading';
+import axios from 'axios';
+
+const api = '//hn.algolia.com/api/v1/search_by_date?tags=story';
 // import MovieDetailView from "./MovieDetailView.vue";
 // import VideoListItem from './VideoListItem.vue'
 // const API_KEY = process.env.VUE_APP_API_KEY_TMDB
-// const BACK_URL = "http://127.0.0.1:8000";
+const BACK_URL = "http://127.0.0.1:8000";
 
 
 export default {
   name: "MovieView",
   props: {
     movies: Array,
+  },
+  components: {
+    InfiniteLoading,
   },
   data() {
     return {
@@ -90,23 +105,54 @@ export default {
         user: null,
         movie: null,
         value: null,
-      }
-      
+      },
+      page: 0 ,
+      list: [],
     };
   },
-  // components: {
-  //   MovieDetailView,
-  // },
-  // computed: {
-  //   release_year() {
-  //     return 
-  //     }
-  // },
-
   created() {
     
   },
   methods: {
+    // infiniteHandler($state) {
+    //   this.$emit('data-load', $state)
+    // },
+    infiniteHandler2($state) {
+      axios.get(api, {
+        params: {
+          page: this.page,
+        },
+      }).then(({ data }) => {
+        console.log(data.hits)
+        if (data.hits.length) {
+          this.page += 1;
+          this.list.push(...data.hits);
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      });
+    },
+
+
+    infiniteHandler($state) {
+      const requestHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get("auth-token")}`
+        }
+      };
+      axios.get(`${BACK_URL}/movies/${this.page}/`, requestHeaders)
+      .then(({ data }) => {
+        console.log(data)
+        if (data.length) {
+          this.page += 1;
+          this.list.push(...data);
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      });
+    },
     detail(movie){
       console.log(movie.id)
       this.$emit("submit-detail-movie", movie);
