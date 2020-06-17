@@ -82,12 +82,15 @@ def movie_detail(request, movie_pk):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def movie_recomand(request):
+def movie_recomand(request, num):
+    
     if request.user.rated_user.count():
-        # 유저가 좋아요한 영화들의 장르들 쿼리셋
-        temp_list = request.user.rate_user.values('genre_ids')
+        # 유저가 좋아요한 영화들 쿼리셋
+        temp_list = request.user.rated_user.filter(value__gte=3).values('movie')
+
+        temp_genres = Genre.objects.filter(movies__in=temp_list).values('db_id')
         # 그 장르들이 있는 영화들의 쿼리셋 중 랜덤으로 10개
-        temp_movies = Movie.objects.filter(genre_ids__in=temp_list).order_by('?')[:10]
+        temp_movies = Movie.objects.filter(genre_ids__in=temp_genres).order_by('?')[:10]
 
     else:
         temp_movies = Movie.objects.order_by('?')[:10]

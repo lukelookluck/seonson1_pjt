@@ -79,7 +79,7 @@
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 
-const api = '//hn.algolia.com/api/v1/search_by_date?tags=story';
+// const api = '//hn.algolia.com/api/v1/search_by_date?tags=story';
 // import MovieDetailView from "./MovieDetailView.vue";
 // import VideoListItem from './VideoListItem.vue'
 // const API_KEY = process.env.VUE_APP_API_KEY_TMDB
@@ -111,27 +111,6 @@ export default {
     
   },
   methods: {
-    // infiniteHandler($state) {
-    //   this.$emit('data-load', $state)
-    // },
-    infiniteHandler2($state) {
-      axios.get(api, {
-        params: {
-          page: this.page,
-        },
-      }).then(({ data }) => {
-        console.log(data.hits)
-        if (data.hits.length) {
-          this.page += 1;
-          this.list.push(...data.hits);
-          $state.loaded();
-        } else {
-          $state.complete();
-        }
-      });
-    },
-
-
     infiniteHandler($state) {
       const requestHeaders = {
         headers: {
