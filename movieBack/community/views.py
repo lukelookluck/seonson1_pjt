@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Article, Comment
-from .serializers import ArticleSerializer, ArticleListSerializer
+from .serializers import ArticleSerializer, ArticleListSerializer, CommentSerializer
 
 
 @api_view(['GET'])
@@ -19,7 +19,7 @@ def movie_articles(request, movie_pk):
 @api_view(['GET'])
 def article_comments(request, movie_pk, article_pk):
     print("아")
-    comments = Article.comment_set.all()
+    comments = Comment.objects.filter(article=article_pk)
     print(comments)
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
@@ -53,3 +53,12 @@ def detail(request, article_pk):
     serializer = ArticleSerializer(article)
     return Response(serializer.data)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def comment_create(request):
+    print(request)
+    serializer = CommentSerializer(data=request.data)
+    print(request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user=request.user)
+        return Response(serializer.data)

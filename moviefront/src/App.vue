@@ -66,7 +66,10 @@
       :articles="articles"
       :selected_movie="selected_movie"
       :selected_article="selected_article"
+      :comments="comments"
+      @submit-comment-data="createComment"
       @submit-article-for-comments="get_article_comments"
+      
       @submit-detail-movie="go_detail_movie"
       @submit-movie-for-articles="get_movie_articles"
       :recomand_movies="recomand_movies"
@@ -105,6 +108,7 @@ export default {
       articles: [],
       selected_movie: null,
       selected_article: null,
+      comments: [],
       num: 0,
       username: '게스트',
     };
@@ -344,7 +348,16 @@ export default {
       axios.get(`${BACK_URL}/community/${movie.id}/${article.id}/comments`,  article, requestHeaders)
       .then(res => {
         console.log(res)
-        // this.articles = res.data
+        this.comments = res.data
+        this.selected_article = article
+        this.$router.push({
+          name: "ArticleDetail",
+          params: {
+            id: article.id,
+            // selectedMovie: x,
+          }
+        })
+
       })
       .catch(err => {
         console.log(err.response)
@@ -362,6 +375,22 @@ export default {
       })
 
 
+    },
+    createComment(commentData) {
+      const reqeustHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get("auth-token")}`
+        }
+      };
+      axios
+        .post(`${BACK_URL}/community/comment_create/`, commentData, reqeustHeaders)
+        .then(res => {
+          this.$router.push({ name: "ArticleDetail" });
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
     }
   }
 };
