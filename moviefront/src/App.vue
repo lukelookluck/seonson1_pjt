@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">홈</router-link>|
+      <!-- <router-link to="/">홈</router-link>| -->
       <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
       <span v-if="isLogin">
         <router-link to="/accounts/logout" @click.native="logout">로그아웃</router-link>|
@@ -18,6 +18,8 @@
     <router-view
       :articles="articles"
       :selected_movie="selected_movie"
+      :selected_article="selected_article"
+      @submit-article-for-comments="get_article_comments"
       @submit-detail-movie="go_detail_movie"
       @submit-movie-for-articles="get_movie_articles"
       :recomand_movies="recomand_movies"
@@ -54,6 +56,7 @@ export default {
       recomand_movies2: [],
       articles: [],
       selected_movie: null,
+      selected_article: null,
 
     }
   },
@@ -130,7 +133,7 @@ export default {
       }
       axios.post(`${BACK_URL}/community/create/`, articleData, reqeustHeaders)
       .then(res => {
-        this.$router.push({name: 'ArticleListView'})
+        this.$router.push({name: 'MovieDetailView'})
         console.log(res.data)
       })
       .catch(err => {
@@ -253,6 +256,27 @@ export default {
         console.log(err.response)
       })
     },
+    get_article_comments(movie, article) {
+      console.log(article)
+      this.selected_article = article
+      console.log(this.selected_article)
+      const requestHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      // console.log(requestHeaders)
+      console.log(movie.id)
+      console.log(article.id)
+      axios.get(`${BACK_URL}/community/${movie.id}/${article.id}/comments`,  article, requestHeaders)
+      .then(res => {
+        console.log(res)
+        // this.articles = res.data
+      })
+      .catch(err => {
+        console.log(err.response)
+      })
+    },
     go_detail_movie(movie) {
       this.selected_movie = movie
       this.$router.push({name: 'MovieDetailView',
@@ -261,7 +285,7 @@ export default {
           selectedMovie: movie
           // selectedMovie: x,
         }
-})
+      })
 
 
     }

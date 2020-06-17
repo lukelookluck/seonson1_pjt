@@ -6,11 +6,11 @@
       <div class="rr">
         <h1>{{ selected_movie.title }}</h1>
         {{ selected_movie.release_date }}, {{ selected_movie.genre_ids }}
-        장르 id를 db에 접근해서 비교해서 값을 가져와야하는데 흠
+        <!-- 장르 id를 db에 접근해서 비교해서 값을 가져와야하는데 흠 -->
         <hr />
       </div>
 
-      {{ selected_movie }}asdasdasd
+      {{ selected_movie }}
       <!-- <p>개요 : {{ movie.overview }}</p> -->
       <br />
       <br />
@@ -21,11 +21,21 @@
       <!-- {{ movie.title }} -->
     </section>
     <section class="border">
-      <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1>
-      <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button>
-      {{ articles }}
+      <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
+      <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
+      <!-- {{ articles }} -->
       <div class="overflow-auto container">
-        <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" hover></b-table>
+        <!-- <ul>
+          <li v-for="article in articles" :key="article.id">{{ article }}</li>
+        </ul> -->
+        <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" hover>
+          <!-- <ul>
+            <li v-for="n in 10" :key="n.id">{{ n }}</li>
+          </ul> -->
+          <template v-slot:cell(title)="data">
+            <a href="#" @click="getArticleComments(selected_movie, data.item)">{{ data.item.title }}</a>
+      </template>
+        </b-table>
         <hr />
         <b-pagination
           v-model="currentPage"
@@ -60,7 +70,7 @@ export default {
     return {
       poster: null,
       
-      perPage: 15,
+      perPage: 3,
       currentPage: 1,
     };
   },
@@ -92,6 +102,9 @@ export default {
     },
     getMovieArticles(movie) {
       this.$emit("submit-movie-for-articles", movie);
+    },
+    getArticleComments(movie, article){
+      this.$emit("submit-article-for-comments", movie, article)
     }
   },
   created() {
