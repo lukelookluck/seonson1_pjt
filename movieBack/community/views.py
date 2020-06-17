@@ -3,7 +3,6 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-
 from .models import Article, Comment
 from .serializers import ArticleSerializer, ArticleListSerializer, CommentSerializer
 
@@ -11,7 +10,7 @@ from .serializers import ArticleSerializer, ArticleListSerializer, CommentSerial
 @api_view(['GET'])
 def movie_articles_list(request, movie_pk):
     print("꺄륵")
-    articles = Article.objects.filter(movie=movie_pk).all()
+    articles = Article.objects.select_related('user').filter(movie=movie_pk).all()
     print(articles)
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)

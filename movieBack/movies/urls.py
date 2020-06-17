@@ -13,6 +13,6 @@ urlpatterns = [
     path('<int:movie_pk>/', views.movie_detail, name='movie_detail'),
     path('like/', views.movie_like, name='movie_like'),
     path('rate/', views.rate_movie, name='rate_movie'),
-    path('recomand/', views.movie_recomand, name='movie_recomand'),
+    path('recomand/<int:num>/', views.movie_recomand, name='movie_recomand'),
     path('recomand2/', views.movie_recomand2, name='movie_recomand2'),
 ]

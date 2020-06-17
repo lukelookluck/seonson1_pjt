@@ -1,6 +1,11 @@
 <template>
-  <div class="container mt-5">
-    <img alt="Vue logo" src="../../../src/assets/unnamed.gif" />
+  <div class="container">
+    <img alt="2" src="../../../src/assets/2.gif" />
+    <img alt="1" src="../../../src/assets/1.gif" />
+    <img alt="3" src="../../../src/assets/3.gif" />
+    <img alt="4" src="../../../src/assets/4.gif" />
+    <img alt="5" src="../../../src/assets/5.gif" />
+    <img alt="6" src="../../../src/assets/6.gif" />
     <div class="text-left">
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
         <b-form-group id="input-group-1" label="유저 이름:" label-for="input-1">

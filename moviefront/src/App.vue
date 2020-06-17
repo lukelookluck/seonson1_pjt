@@ -2,24 +2,23 @@
   <div id="app">
     <!-- <h2>검색기능 구현해 말아?</h2> -->
     <!-- <div id="nav"> -->
-      <!-- <router-link to="/">홈</router-link>| -->
-      <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
+    <!-- <router-link to="/">홈</router-link>| -->
+    <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
     <b-navbar toggleable="lg" type="light" variant="warning  ">
       <b-navbar-brand to="/">지녀비와 거누의 영화 추천 사이트</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="isLogin">
-            
-            <b-nav-item href="#" @click="logout">로그아웃</b-nav-item>
-            <!-- <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item> -->
-            <b-nav-item href="#" to="/">영화 평가하기</b-nav-item>
-            <b-nav-item to="/recomand/">취향분석  </b-nav-item>
+          <b-nav-item href="#" @click="logout">로그아웃</b-nav-item>
+          <!-- <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item> -->
+          <b-nav-item href="#" to="/">영화 평가하기</b-nav-item>
+          <b-nav-item to="/recomand/">취향분석</b-nav-item>
         </b-navbar-nav>
- 
+
         <b-navbar-nav v-else>
-            <b-nav-item href="#" to="/accounts/login">로그인</b-nav-item>
-            <b-nav-item href="#" to="/accounts/signup">회원가입</b-nav-item>
+          <b-nav-item href="#" to="/accounts/login">로그인</b-nav-item>
+          <b-nav-item href="#" to="/accounts/signup">회원가입</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -34,7 +33,7 @@
             <b-dropdown-item href="#">ES</b-dropdown-item>
             <b-dropdown-item href="#">RU</b-dropdown-item>
             <b-dropdown-item href="#">FA</b-dropdown-item>
-          </b-nav-item-dropdown> -->
+          </b-nav-item-dropdown>-->
 
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
@@ -60,7 +59,7 @@
         <router-link to="/accounts/login">로그인</router-link>|
         <router-link to="/accounts/signup">회원가입</router-link>|
       </span>
-    </div> -->
+    </div>-->
     <router-view
       @data-load="data_load"
       :articles="articles"
@@ -69,7 +68,6 @@
       @show-article="get_article"
       :comments="comments"
       @submit-comment-data="createComment"
-      
       @submit-detail-movie="go_detail_movie"
       @submit-movie-for-articles="get_movie_articles"
       :recomand_movies="recomand_movies"
@@ -111,18 +109,17 @@ export default {
       comments: [],
       commentData: [],
       num: 0,
-      username: '',
-
+      username: ""
     };
   },
   created() {
     if (this.$cookies.isKey("auth-token")) {
       this.isLogin = true;
       const requestHeaders = {
-          headers: {
-            Authorization: `Token ${this.$cookies.get("auth-token")}`
-          }
-        };
+        headers: {
+          Authorization: `Token ${this.$cookies.get("auth-token")}`
+        }
+      };
       axios
         .get(`${BACK_URL}/accounts/get_username/`, requestHeaders)
         .then(res => {
@@ -132,34 +129,35 @@ export default {
         .catch(err => {
           console.log(err);
         });
-      // this.username = 
+      // this.username =
     } else {
       this.isLogin = false;
-      this.username = '게스트'
+      this.username = "게스트";
       this.$router.push("/accounts/first");
     }
-    this.data_load
+    this.data_load;
     this.recomand();
     this.recomand2();
   },
   methods: {
     data_load($state) {
-       const requestHeaders = {
+      const requestHeaders = {
         headers: {
           Authorization: `Token ${this.$cookies.get("auth-token")}`
         }
       };
       console.log($state);
-      axios.get(`${BACK_URL}/movies/${this.num}/`, requestHeaders)
-      .then(({ data }) => {
-        if (data.hits.length) {
-          this.num += 1;
-          this.list.push(...data.hits);
-          $state.loaded();
-        } else {
-          $state.complete();
-        }
-      });
+      axios
+        .get(`${BACK_URL}/movies/${this.num}/`, requestHeaders)
+        .then(({ data }) => {
+          if (data.hits.length) {
+            this.num += 1;
+            this.list.push(...data.hits);
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
+        });
     },
     setCookie(key) {
       this.$cookies.set("auth-token", key);
@@ -169,11 +167,22 @@ export default {
       axios
         .post(`${BACK_URL}/rest-auth/login/`, loginData)
         .then(res => {
-          console.log(res)
+          console.log(res);
           this.setCookie(res.data.key);
           this.$router.push("/");
-          console.log(loginData)  
-          this.username = loginData.username
+          console.log(loginData);
+          this.username = loginData.username;
+          const requestHeaders = {
+            headers: {
+              Authorization: `Token ${this.$cookies.get("auth-token")}`
+            }
+          };
+          axios.get(`${BACK_URL}/rest-auth/user/`, requestHeaders)
+          .then(res => {
+            console.log("damslkdnaslkdnkasj", res.data.username)
+            this.username = res.data.username
+            console.log(this.username)
+          })
         })
         .catch(err => {
           console.error(err.response);
@@ -191,7 +200,7 @@ export default {
         .then(() => {
           this.$cookies.remove("auth-token");
           this.isLogin = false;
-          this.username = '게스트'
+          this.username = "게스트";
           this.$router.push("/accounts/first");
         })
         .catch(err => {
@@ -199,10 +208,12 @@ export default {
         });
     },
     signup(signupData) {
+      console.log(signupData);
+
       axios
         .post(`${BACK_URL}/rest-auth/signup/`, signupData)
         .then(res => {
-          // console.log(signupData)
+          console.log(signupData);
           // console.log(res)
           this.setCookie(res.data.key);
           this.$router.push("/");
@@ -308,7 +319,6 @@ export default {
         .then(res => {
           console.log(res.data);
           this.recomand_movies = res.data;
-          
         })
         .catch(err => {
           console.log(err.response);
@@ -345,7 +355,7 @@ export default {
           requestHeaders
         )
         .then(res => {
-          console.log(res.data);
+          console.log("아티클 데이터", res.data);
           this.articles = res.data;
         })
         .catch(err => {
@@ -353,32 +363,35 @@ export default {
         });
     },
     get_article(movie, article) {
-      console.log(article)
-      this.selected_article = article
-      console.log(this.selected_article)
+      console.log(article);
+      this.selected_article = article;
+      console.log(this.selected_article);
       const requestHeaders = {
         headers: {
-          Authorization: `Token ${this.$cookies.get('auth-token')}`
+          Authorization: `Token ${this.$cookies.get("auth-token")}`
         }
-      }
+      };
       // console.log(requestHeaders)
-      console.log(movie.id)
-      console.log(article.id)
-      axios.get(`${BACK_URL}/community/${movie.id}/${article.id}/comments`,  article, requestHeaders)
-      .then(res => {
-        console.log(res)
-        this.comments = res.data
-        this.selected_article = article
-        this.$router.push({
-          name: "ArticleDetail",
-          params: {
-            movie: movie.id,
-            article: article.id,
-          }
-        })
-
-      })
-
+      console.log(movie.id);
+      console.log(article.id);
+      axios
+        .get(
+          `${BACK_URL}/community/${movie.id}/${article.id}/comments`,
+          article,
+          requestHeaders
+        )
+        .then(res => {
+          console.log(res);
+          this.comments = res.data;
+          this.selected_article = article;
+          this.$router.push({
+            name: "ArticleDetail",
+            params: {
+              movie: movie.id,
+              article: article.id
+            }
+          });
+        });
     },
     go_detail_movie(movie) {
       this.selected_movie = movie;
@@ -389,9 +402,7 @@ export default {
           selectedMovie: movie
           // selectedMovie: x,
         }
-      })
-
-
+      });
     },
     createComment(commentData) {
       this.commentData = commentData
@@ -420,7 +431,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Noto Sans KR', sans-serif, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans KR", sans-serif, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

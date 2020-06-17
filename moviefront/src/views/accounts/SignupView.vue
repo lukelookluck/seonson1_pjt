@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <img alt="Vue logo" src="../../../src/assets/unnamed.gif" />
+    <img alt="2" src="../../../src/assets/2.gif" />
+    <img alt="1" src="../../../src/assets/1.gif" />
+    <img alt="3" src="../../../src/assets/3.gif" />
     <h1>Signup</h1>
     <div class="text-left">
       <b-form @submit="signup" v-if="show">
@@ -37,6 +39,9 @@
         <b-button type="submit" variant="primary">회원가입</b-button>
       </b-form>
     </div>
+  <img alt="4" src="../../../src/assets/4.gif" />
+  <img alt="5" src="../../../src/assets/5.gif" />
+  <img alt="6" src="../../../src/assets/6.gif" />
   </div>
 </template>
 

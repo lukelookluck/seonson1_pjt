@@ -8,6 +8,8 @@ from django_mysql.models import ListCharField
 
 class User(AbstractUser):
   pass
+  # def __str__(self):
+  #   return self.username
   # like_movie = ListCharField(
   #   base_field=CharField(max_length=10),
   #       size=6,
