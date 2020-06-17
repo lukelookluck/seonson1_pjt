@@ -1,33 +1,43 @@
 <template>
   <div class="container">
-    <section class="border">
-      <h1>영화 정보 표시할 섹션</h1>
-      <img class="d-flex" :src="poster" alt="poster" />
-      <div class="rr">
-        <h1>{{ selected_movie.title }}</h1>
-        {{ selected_movie.release_date }}, {{ selected_movie.genre_ids }}
-        <!-- 장르 id를 db에 접근해서 비교해서 값을 가져와야하는데 흠 -->
-        <hr />
+    <img class="d-flex" id="poster1" :src="poster" alt="poster" />
+    <section class="border d-f">
+      <img id="poster2" :src="'https://image.tmdb.org/t/p/w200/'+ selected_movie.poster_path" alt />
+      <div id="title">
+        <h1 class="text-white text-left">{{ selected_movie.title }}</h1>
+        <h5 class="text-white text-left pl-3">
+          {{ selected_movie.release_date.substring(0,4) }}
+          <span
+            v-for="genre in genres"
+            :key="genre.db_id"
+          >ㆍ{{ genre.name }}</span>
+        </h5>
       </div>
-      {{ selected_movie }}
-      <!-- <p>개요 : {{ movie.overview }}</p> -->
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <!-- {{ movie.title }} -->
-      <!-- {{ movie.title }} -->
+      <hr />
+      <div class="container">
+        <b-input-group>
+          <b-form-rating
+            @change="rating(selected_movie)"
+            no-border size="lg"
+            v-model="selected_movie.rate_value"
+            color="#ff8800"
+          ></b-form-rating>
+        </b-input-group>
+      </div>
+      <b-button variant="outline-success" @click="like(selected_movie)">조아요</b-button>
+
     </section>
     <section class="border">
-      <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
-      <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
-      <!-- {{ articles }} -->
       <div class="overflow-auto container">
-        <!-- <ul>
-          <li v-for="article in articles" :key="article.id">{{ article }}</li>
-        </ul>-->
-        <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" v-for="article in pageArticles" :key="article.id" hover>
+        <b-table
+          :items="pageArticles"
+          fixed
+          :per-page="perPage"
+          :current-page="currentPage"
+          v-for="article in pageArticles"
+          :key="article.id"
+          hover
+        >
           <!-- <ul>
             <li v-for="n in 10" :key="n.id">{{ n }}</li>
           </ul>-->
@@ -57,7 +67,7 @@
 import axios from "axios";
 
 // const API_KEY = process.env.VUE_APP_API_KEY_TMDB
-const IMG_URL = "https://image.tmdb.org/t/p/w200";
+const IMG_URL = "https://image.tmdb.org/t/p/original";
 
 export default {
   name: "MovieDetailView",
@@ -68,10 +78,26 @@ export default {
   data() {
     return {
       poster: null,
-
+      poster2: null,
+      genres: [],
       perPage: 3,
-      currentPage: 1
+      currentPage: 1,
+      rateData: {
+        user: null,
+        movie: null,
+        value: this.selected_movie.rated_movie[0].value
+      },
+      likeData: {
+        id: null,
+        like: null
+      },
     };
+  },
+  created() {
+    this.getMovieDetail();
+    this.getMovieArticles(this.selected_movie);
+    console.log(this.$route.params.id);
+    this.genres = this.selected_movie.genre_ids;
   },
   computed: {
     rows() {
@@ -89,7 +115,7 @@ export default {
   methods: {
     getMovieDetail() {
       axios
-        .get(`${IMG_URL}${this.selected_movie.poster_path}`)
+        .get(`${IMG_URL}${this.selected_movie.backdrop_path}`)
         .then(res => {
           console.log(res.config.url);
           this.poster = res.config.url;
@@ -103,23 +129,44 @@ export default {
       this.$emit("submit-movie-for-articles", movie);
     },
     getArticle(movie, article) {
-      console.log("ASDASD", movie, article)
+      console.log("ASDASD", movie, article);
       this.$emit("show-article", movie, article);
-    }
+    },
+    rating(rateValue) {
+    this.rateData.movie = rateValue.id;
+    this.rateData.value = rateValue.rate_value;
+    // console.log(this.rateData);
+    this.$emit("submit-rate-value", this.rateData);
+    },
+    like(movie) {
+      this.likeData.id = movie.id;
+      this.newValue++
+      this.$emit("submit-like-movie", this.likeData);
+      
+      
+    },
   },
-  created() {
-    this.getMovieDetail();
-    this.getMovieArticles(this.selected_movie);
-    console.log(this.$route.params.id);
-  }
+  
+  
 };
 </script>
 
-<style>
-.rr {
-  margin-left: 250px;
-}
-img {
+<style scoped>
+#poster1 {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 500px;
+}
+#poster2 {
+  position: absolute;
+  top: 300px;
+  left: 420px;
+}
+#title {
+  position: absolute;
+  top: 500px;
+  left: 650px;
+  font-size: 250%;
 }
 </style>

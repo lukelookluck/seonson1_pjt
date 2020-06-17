@@ -19,3 +19,12 @@ def like(request):
 			# print(serializer)	
 			return Response(serializer.data)
 			# return render(request, '/' )
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_username(request):
+	print(request.user.id)
+	user = get_object_or_404(User, pk=request.user.id)
+	print(user.password)
+	# serializer = UserSerializer(user, many=True)
+	return Response(user.username)

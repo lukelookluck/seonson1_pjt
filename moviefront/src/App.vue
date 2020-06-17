@@ -12,9 +12,9 @@
         <b-navbar-nav v-if="isLogin">
             
             <b-nav-item href="#" @click="logout">로그아웃</b-nav-item>
-            <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item>
+            <!-- <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item> -->
             <b-nav-item href="#" to="/">영화 평가하기</b-nav-item>
-            <b-nav-item href="#" to="/movie/recomand">취향분석  </b-nav-item>
+            <b-nav-item to="/recomand/">취향분석  </b-nav-item>
         </b-navbar-nav>
  
         <b-navbar-nav v-else>
@@ -67,6 +67,9 @@
       :selected_movie="selected_movie"
       :selected_article="selected_article"
       @show-article="get_article"
+      :comments="comments"
+      @submit-comment-data="createComment"
+      
       @submit-detail-movie="go_detail_movie"
       @submit-movie-for-articles="get_movie_articles"
       :recomand_movies="recomand_movies"
@@ -105,29 +108,38 @@ export default {
       articles: [],
       selected_movie: null,
       selected_article: null,
+      comments: [],
       num: 0,
-      username: '게스트',
+      username: '',
+
     };
   },
   created() {
     if (this.$cookies.isKey("auth-token")) {
       this.isLogin = true;
+      const requestHeaders = {
+          headers: {
+            Authorization: `Token ${this.$cookies.get("auth-token")}`
+          }
+        };
+      axios
+        .get(`${BACK_URL}/accounts/get_username/`, requestHeaders)
+        .then(res => {
+          console.log(res.data);
+          this.username = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      // this.username = 
     } else {
       this.isLogin = false;
+      this.username = '게스트'
       this.$router.push("/accounts/first");
     }
     this.data_load
-    // axios
-    //   .get(`${BACK_URL}/movies/${this.num}/`)
-    //   .then(res => {
-    //     this.movies = res.data;
-    //     console.log(this.movies);
-    //     // console.log(res.data.re  sults);
-    //     console.log(res.data);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    this.recomand();
+    this.recomand2();
   },
   methods: {
     data_load($state) {
@@ -156,9 +168,10 @@ export default {
       axios
         .post(`${BACK_URL}/rest-auth/login/`, loginData)
         .then(res => {
+          console.log(res)
           this.setCookie(res.data.key);
           this.$router.push("/");
-          console.log(loginData)
+          console.log(loginData)  
           this.username = loginData.username
         })
         .catch(err => {
@@ -177,6 +190,7 @@ export default {
         .then(() => {
           this.$cookies.remove("auth-token");
           this.isLogin = false;
+          this.username = '게스트'
           this.$router.push("/accounts/first");
         })
         .catch(err => {
@@ -293,6 +307,7 @@ export default {
         .then(res => {
           console.log(res.data);
           this.recomand_movies = res.data;
+          
         })
         .catch(err => {
           console.log(err.response);
@@ -337,28 +352,32 @@ export default {
         });
     },
     get_article(movie, article) {
-      console.log(movie, article)
+      console.log(article)
+      this.selected_article = article
+      console.log(this.selected_article)
       const requestHeaders = {
         headers: {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
-      axios.get(`${BACK_URL}/community/${article.id}`, article.id, requestHeaders)
+      // console.log(requestHeaders)
+      console.log(movie.id)
+      console.log(article.id)
+      axios.get(`${BACK_URL}/community/${movie.id}/${article.id}/comments`,  article, requestHeaders)
       .then(res => {
         console.log(res)
+        this.comments = res.data
+        this.selected_article = article
         this.$router.push({
-        name: "ArticleDetail",
-        params: {
-          id: movie.id,
-          // selectedMovie: x,
-        }
-        });
+          name: "ArticleDetail",
+          params: {
+            movie: movie.id,
+            article: article.id,
+          }
+        })
 
-        // this.articles = res.data
       })
-      .catch(err => {
-        console.log(err.response)
-      })
+
     },
     go_detail_movie(movie) {
       this.selected_movie = movie;
@@ -372,6 +391,22 @@ export default {
       })
 
 
+    },
+    createComment(commentData) {
+      const reqeustHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get("auth-token")}`
+        }
+      };
+      axios
+        .post(`${BACK_URL}/community/comment_create/`, commentData, reqeustHeaders)
+        .then(res => {
+          this.$router.push({ name: "ArticleDetail" });
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
     }
   }
 };
@@ -380,7 +415,7 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans KR', sans-serif, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

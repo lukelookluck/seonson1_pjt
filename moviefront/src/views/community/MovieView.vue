@@ -97,10 +97,7 @@ export default {
   data() {
     return {
       movie2: this.movies,
-      likeData: {
-        id: null,
-        like: null
-      },
+      
       rateData: {
         user: null,
         movie: null,
@@ -156,22 +153,9 @@ export default {
     detail(movie){
       console.log(movie.id)
       this.$emit("submit-detail-movie", movie);
-      // axios.get(`${BACK_URL}/movies/${movie.id}`)
-      // .then(res => {
-      //   console.log(res.data)
-      // })
-      // .catch(err => {
-      //   console.log(err.data)
-      // })
 
     },
-    like(movie) {
-      this.likeData.id = movie.id;
-      this.newValue++
-      this.$emit("submit-like-movie", this.likeData);
-      
-      
-    },
+    
     rating(rateValue) {
       this.rateData.movie = rateValue.id
       this.rateData.value = rateValue.rate_value

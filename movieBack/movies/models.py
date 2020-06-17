@@ -10,10 +10,6 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
     
-    # def __unicode__(self):
-        # return self.db_id
-
-
 
 class Movie(models.Model):
     # db_id = models.TextField(primary_key=True)
