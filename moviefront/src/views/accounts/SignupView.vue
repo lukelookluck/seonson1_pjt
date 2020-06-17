@@ -17,7 +17,7 @@
         <b-form-group id="input-group-2" label="비밀번호:" label-for="input-2">
           <b-form-input
             id="input-2"
-            v-model="signupData.password"
+            v-model="signupData.password1"
             type="password"
             required
             placeholder="비밀번호를 입력하세요"

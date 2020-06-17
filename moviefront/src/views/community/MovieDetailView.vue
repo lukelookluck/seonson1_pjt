@@ -24,14 +24,12 @@
       <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
       <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
       <!-- {{ articles }} -->
-      <div class="overflow-auto container">
+      <div class="overflow-auto container mb-5">
         <!-- <ul>
           <li v-for="article in articles" :key="article.id">{{ article }}</li>
         </ul> -->
         <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" hover>
-          <!-- <ul>
-            <li v-for="n in 10" :key="n.id">{{ n }}</li>
-          </ul> -->
+
           <template v-slot:cell(title)="data">
             <a href="#" @click="getArticleComments(selected_movie, data.item)">{{ data.item.title }}</a>
       </template>
@@ -45,11 +43,7 @@
           align="center"
         ></b-pagination>
       </div>
-      <a href="#">더 보기</a>
-    </section>
-
-    <section class="border">
-      <h1>장르나 비슷한 영화 추천하는 섹션</h1>
+      
     </section>
   </div>
 </template>

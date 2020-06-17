@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h2>검색기능 구현해 말아?</h2>
+    <!-- <h2>검색기능 구현해 말아?</h2> -->
     <!-- <div id="nav"> -->
       <!-- <router-link to="/">홈</router-link>| -->
       <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
@@ -109,6 +109,7 @@ export default {
       selected_movie: null,
       selected_article: null,
       comments: [],
+      commentData: [],
       num: 0,
       username: '게스트',
     };
@@ -377,13 +378,17 @@ export default {
 
     },
     createComment(commentData) {
+      this.commentData = commentData
+      // console.log(this.commentData.article_id)
+      // console.log(commentData)
+      // console.log(this.commentData)
       const reqeustHeaders = {
         headers: {
           Authorization: `Token ${this.$cookies.get("auth-token")}`
         }
       };
       axios
-        .post(`${BACK_URL}/community/comment_create/`, commentData, reqeustHeaders)
+        .post(`${BACK_URL}/community/${this.commentData.article}/comment_create/`, commentData, reqeustHeaders)
         .then(res => {
           this.$router.push({ name: "ArticleDetail" });
           console.log(res.data);

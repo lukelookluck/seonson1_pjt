@@ -55,8 +55,8 @@ def detail(request, article_pk):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def comment_create(request):
-    print(request)
+def comment_create(request, article_pk):
+    print(request.user)
     serializer = CommentSerializer(data=request.data)
     print(request.data)
     if serializer.is_valid(raise_exception=True):

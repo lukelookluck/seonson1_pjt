@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-5">
     <img alt="Vue logo" src="../../../src/assets/unnamed.gif" />
     <div class="text-left">
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
