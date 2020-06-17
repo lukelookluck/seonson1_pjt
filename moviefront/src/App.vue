@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <h2>검색기능 구현해 말아?</h2>
+    <!-- <div id="nav"> -->
+      <!-- <router-link to="/">홈</router-link>| -->
       <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
     <b-navbar toggleable="lg" type="light" variant="warning  ">
       <b-navbar-brand to="/">지녀비와 거누의 영화 추천 사이트</b-navbar-brand>
@@ -63,6 +65,8 @@
       @data-load="data_load"
       :articles="articles"
       :selected_movie="selected_movie"
+      :selected_article="selected_article"
+      @submit-article-for-comments="get_article_comments"
       @submit-detail-movie="go_detail_movie"
       @submit-movie-for-articles="get_movie_articles"
       :recomand_movies="recomand_movies"
@@ -100,11 +104,10 @@ export default {
       recomand_movies2: [],
       articles: [],
       selected_movie: null,
+      selected_article: null,
       num: 0,
       username: '게스트',
     };
-  },
-  computed() {
   },
   created() {
     if (this.$cookies.isKey("auth-token")) {
@@ -326,6 +329,27 @@ export default {
           console.log(err.response);
         });
     },
+    get_article_comments(movie, article) {
+      console.log(article)
+      this.selected_article = article
+      console.log(this.selected_article)
+      const requestHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      // console.log(requestHeaders)
+      console.log(movie.id)
+      console.log(article.id)
+      axios.get(`${BACK_URL}/community/${movie.id}/${article.id}/comments`,  article, requestHeaders)
+      .then(res => {
+        console.log(res)
+        // this.articles = res.data
+      })
+      .catch(err => {
+        console.log(err.response)
+      })
+    },
     go_detail_movie(movie) {
       this.selected_movie = movie;
       this.$router.push({
@@ -335,7 +359,9 @@ export default {
           selectedMovie: movie
           // selectedMovie: x,
         }
-      });
+      })
+
+
     }
   }
 };

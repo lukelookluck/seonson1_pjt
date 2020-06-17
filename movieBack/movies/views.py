@@ -31,7 +31,7 @@ def movie_create(request):
     serializer = MovieSerializer(data=request.data)
     print("+++++++++++++++++++++++++", request.data.get('genre_ids'))
     print(serializer)
-    if serializer.is_valid(raise_exception=True):
+    if serializer.is_valid(raise_exception=False):
         serializer.save()
         return Response(serializer.data)
 
