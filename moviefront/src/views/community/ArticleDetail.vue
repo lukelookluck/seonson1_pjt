@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <section class="boader mt-5">
       <!-- <h1>article detail</h1> -->
       <!-- {{ selected_movie.title }}<br> -->
@@ -8,10 +8,10 @@
       게시글 내용 : {{ selected_article.content }}
     </section>
     <hr>
-    <section class="boader">
+    <div class="boader text-left">
       <p>댓글 목록</p><hr>
-      <ul class="mb-5">
-        <li v-for="comment in comments" :key="comment.id">
+      <ul class="mb-5  text-left">
+        <li class="text-decoration-none" v-for="comment in comments" :key="comment.id">
           {{ comment.content }} by. {{ comment.user }}
         </li>
       </ul>
@@ -38,7 +38,7 @@
         </div> -->
         <button type="button" @click="createComment" class="btn btn-primary">작성하기</button>
       </form>
-    </section>
+    </div>
   
   </div>
 </template>
