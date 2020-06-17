@@ -12,9 +12,9 @@
         <b-navbar-nav v-if="isLogin">
             
             <b-nav-item href="#" @click="logout">로그아웃</b-nav-item>
-            <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item>
+            <!-- <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item> -->
             <b-nav-item href="#" to="/">영화 평가하기</b-nav-item>
-            <b-nav-item href="#" to="/movie/recomand">취향분석  </b-nav-item>
+            <b-nav-item to="/recomand/">취향분석  </b-nav-item>
         </b-navbar-nav>
  
         <b-navbar-nav v-else>
@@ -66,9 +66,9 @@
       :articles="articles"
       :selected_movie="selected_movie"
       :selected_article="selected_article"
+      @show-article="get_article"
       :comments="comments"
       @submit-comment-data="createComment"
-      @submit-article-for-comments="get_article_comments"
       
       @submit-detail-movie="go_detail_movie"
       @submit-movie-for-articles="get_movie_articles"
@@ -111,32 +111,47 @@ export default {
       comments: [],
       commentData: [],
       num: 0,
-      username: '게스트',
+      username: '',
+
     };
   },
   created() {
     if (this.$cookies.isKey("auth-token")) {
       this.isLogin = true;
+      const requestHeaders = {
+          headers: {
+            Authorization: `Token ${this.$cookies.get("auth-token")}`
+          }
+        };
+      axios
+        .get(`${BACK_URL}/accounts/get_username/`, requestHeaders)
+        .then(res => {
+          console.log(res.data);
+          this.username = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      // this.username = 
     } else {
       this.isLogin = false;
+      this.username = '게스트'
       this.$router.push("/accounts/first");
     }
-    axios
-      .get(`${BACK_URL}/movies/${this.num}/`)
-      .then(res => {
-        this.movies = res.data;
-        console.log(this.movies);
-        // console.log(res.data.re  sults);
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.data_load
+    this.recomand();
+    this.recomand2();
   },
   methods: {
     data_load($state) {
+       const requestHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get("auth-token")}`
+        }
+      };
       console.log($state);
-      axios.get(`${BACK_URL}/movies/${this.num}/`).then(({ data }) => {
+      axios.get(`${BACK_URL}/movies/${this.num}/`, requestHeaders)
+      .then(({ data }) => {
         if (data.hits.length) {
           this.num += 1;
           this.list.push(...data.hits);
@@ -154,9 +169,10 @@ export default {
       axios
         .post(`${BACK_URL}/rest-auth/login/`, loginData)
         .then(res => {
+          console.log(res)
           this.setCookie(res.data.key);
           this.$router.push("/");
-          console.log(loginData)
+          console.log(loginData)  
           this.username = loginData.username
         })
         .catch(err => {
@@ -175,6 +191,7 @@ export default {
         .then(() => {
           this.$cookies.remove("auth-token");
           this.isLogin = false;
+          this.username = '게스트'
           this.$router.push("/accounts/first");
         })
         .catch(err => {
@@ -291,6 +308,7 @@ export default {
         .then(res => {
           console.log(res.data);
           this.recomand_movies = res.data;
+          
         })
         .catch(err => {
           console.log(err.response);
@@ -334,7 +352,7 @@ export default {
           console.log(err.response);
         });
     },
-    get_article_comments(movie, article) {
+    get_article(movie, article) {
       console.log(article)
       this.selected_article = article
       console.log(this.selected_article)
@@ -354,15 +372,13 @@ export default {
         this.$router.push({
           name: "ArticleDetail",
           params: {
-            id: article.id,
-            // selectedMovie: x,
+            movie: movie.id,
+            article: article.id,
           }
         })
 
       })
-      .catch(err => {
-        console.log(err.response)
-      })
+
     },
     go_detail_movie(movie) {
       this.selected_movie = movie;
@@ -404,7 +420,7 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans KR', sans-serif, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

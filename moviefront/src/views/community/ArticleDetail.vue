@@ -1,8 +1,14 @@
 <template>
+<<<<<<< HEAD
   <div>
     <section class="boader mt-5">
       <!-- <h1>article detail</h1> -->
       <!-- {{ selected_movie.title }}<br> -->
+=======
+  <div class="container">
+    <section class="boader">
+      <h1>article detail</h1>
+>>>>>>> f261b6f80cbc5f8f6fe479c4d81bdfd08175696e
       <!-- {{ selected_article }} -->
       게시글 제목 : {{ selected_article.title }}<br>
       게시글 내용 : {{ selected_article.content }}

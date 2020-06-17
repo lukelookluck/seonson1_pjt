@@ -10,10 +10,10 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     like_user = MovieSerializer(many=True, read_only=True)
     rate_user = MovieSerializer(many=True, read_only=True)
-    rated_user = UserRateMovieSerializer(read_only=True)
+    rated_user = UserRateMovieSerializer(many=True, read_only=True)
     like_articles = ArticleSerializer(many=True, read_only=True)
     dislike_articles = ArticleSerializer(many=True, read_only=True)
-    comments = CommentSerializer(read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = User

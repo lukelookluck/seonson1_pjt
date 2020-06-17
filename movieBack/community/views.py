@@ -9,12 +9,21 @@ from .serializers import ArticleSerializer, ArticleListSerializer, CommentSerial
 
 
 @api_view(['GET'])
-def movie_articles(request, movie_pk):
+def movie_articles_list(request, movie_pk):
     print("꺄륵")
     articles = Article.objects.filter(movie=movie_pk).all()
     print(articles)
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def detail(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    serializer = ArticleSerializer(article)
+    return Response(serializer.data)
+
+
 
 @api_view(['GET'])
 def article_comments(request, movie_pk, article_pk):
@@ -47,11 +56,7 @@ def create(request):
         return Response(serializer.data)
 
 
-@api_view(['GET'])
-def detail(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
-    serializer = ArticleSerializer(article)
-    return Response(serializer.data)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

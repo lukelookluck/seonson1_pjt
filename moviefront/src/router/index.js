@@ -45,7 +45,7 @@ Vue.use(VueRouter)
     component: MovieView
   },
   {
-    path: '/community/movie/:id',
+    path: '/movie/:id',
     name: 'MovieDetailView',
     component: MovieDetailView
   },
@@ -60,7 +60,7 @@ Vue.use(VueRouter)
     component: FirstView
   },
   {
-    path: '/movie/recomand',
+    path: '/recomand',
     name: 'MovieRecommandView',
     component: MovieRecommandView
   },
@@ -70,7 +70,7 @@ Vue.use(VueRouter)
     component: eachCommunityView
   },
   {
-    path: '/movie/artcles/:id',
+    path: '/movie/:movie/article/:article',
     name: 'ArticleDetail',
     component: ArticleDetail
   },
