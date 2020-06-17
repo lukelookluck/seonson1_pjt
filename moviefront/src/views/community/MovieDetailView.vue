@@ -28,7 +28,6 @@
 
     </section>
     <section class="border">
-<<<<<<< HEAD
       <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
       <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
       <!-- {{ articles }} -->
@@ -38,21 +37,6 @@
         </ul> -->
         <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" hover>
 
-=======
-      <div class="overflow-auto container">
-        <b-table
-          :items="pageArticles"
-          fixed
-          :per-page="perPage"
-          :current-page="currentPage"
-          v-for="article in pageArticles"
-          :key="article.id"
-          hover
-        >
-          <!-- <ul>
-            <li v-for="n in 10" :key="n.id">{{ n }}</li>
-          </ul>-->
->>>>>>> f261b6f80cbc5f8f6fe479c4d81bdfd08175696e
           <template v-slot:cell(title)="data">
             <a href="#" @click="getArticle(selected_movie, data.item)">{{ data.item.title }}</a>
           </template>
