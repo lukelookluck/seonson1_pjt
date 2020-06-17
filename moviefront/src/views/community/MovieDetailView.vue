@@ -9,7 +9,6 @@
         <!-- 장르 id를 db에 접근해서 비교해서 값을 가져와야하는데 흠 -->
         <hr />
       </div>
-
       {{ selected_movie }}
       <!-- <p>개요 : {{ movie.overview }}</p> -->
       <br />
@@ -27,14 +26,14 @@
       <div class="overflow-auto container">
         <!-- <ul>
           <li v-for="article in articles" :key="article.id">{{ article }}</li>
-        </ul> -->
-        <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" hover>
+        </ul>-->
+        <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" v-for="article in pageArticles" :key="article.id" hover>
           <!-- <ul>
             <li v-for="n in 10" :key="n.id">{{ n }}</li>
-          </ul> -->
+          </ul>-->
           <template v-slot:cell(title)="data">
-            <a href="#" @click="getArticleComments(selected_movie, data.item)">{{ data.item.title }}</a>
-      </template>
+            <a href="#" @click="getArticle(selected_movie, data.item)">{{ data.item.title }}</a>
+          </template>
         </b-table>
         <hr />
         <b-pagination
@@ -69,9 +68,9 @@ export default {
   data() {
     return {
       poster: null,
-      
+
       perPage: 3,
-      currentPage: 1,
+      currentPage: 1
     };
   },
   computed: {
@@ -79,12 +78,12 @@ export default {
       return this.articles.length;
     },
     pageArticles() {
-      return this.articles.map((items) => {
-        let user = items["user"].username
-        console.log(user)
-        
-        return items
-      })
+      return this.articles.map(items => {
+        let user = items["user"].username;
+        console.log(user);
+
+        return items;
+      });
     }
   },
   methods: {
@@ -103,12 +102,13 @@ export default {
     getMovieArticles(movie) {
       this.$emit("submit-movie-for-articles", movie);
     },
-    getArticleComments(movie, article){
-      this.$emit("submit-article-for-comments", movie, article)
+    getArticle(movie, article) {
+      console.log("ASDASD", movie, article)
+      this.$emit("show-article", movie, article);
     }
   },
   created() {
-    this.getMovieDetail()
+    this.getMovieDetail();
     this.getMovieArticles(this.selected_movie);
     console.log(this.$route.params.id);
   }

@@ -66,7 +66,7 @@
       :articles="articles"
       :selected_movie="selected_movie"
       :selected_article="selected_article"
-      @submit-article-for-comments="get_article_comments"
+      @show-article="get_article"
       @submit-detail-movie="go_detail_movie"
       @submit-movie-for-articles="get_movie_articles"
       :recomand_movies="recomand_movies"
@@ -116,22 +116,29 @@ export default {
       this.isLogin = false;
       this.$router.push("/accounts/first");
     }
-    axios
-      .get(`${BACK_URL}/movies/${this.num}/`)
-      .then(res => {
-        this.movies = res.data;
-        console.log(this.movies);
-        // console.log(res.data.re  sults);
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.data_load
+    // axios
+    //   .get(`${BACK_URL}/movies/${this.num}/`)
+    //   .then(res => {
+    //     this.movies = res.data;
+    //     console.log(this.movies);
+    //     // console.log(res.data.re  sults);
+    //     console.log(res.data);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   },
   methods: {
     data_load($state) {
+       const requestHeaders = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get("auth-token")}`
+        }
+      };
       console.log($state);
-      axios.get(`${BACK_URL}/movies/${this.num}/`).then(({ data }) => {
+      axios.get(`${BACK_URL}/movies/${this.num}/`, requestHeaders)
+      .then(({ data }) => {
         if (data.hits.length) {
           this.num += 1;
           this.list.push(...data.hits);
@@ -329,21 +336,24 @@ export default {
           console.log(err.response);
         });
     },
-    get_article_comments(movie, article) {
-      console.log(article)
-      this.selected_article = article
-      console.log(this.selected_article)
+    get_article(movie, article) {
+      console.log(movie, article)
       const requestHeaders = {
         headers: {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
-      // console.log(requestHeaders)
-      console.log(movie.id)
-      console.log(article.id)
-      axios.get(`${BACK_URL}/community/${movie.id}/${article.id}/comments`,  article, requestHeaders)
+      axios.get(`${BACK_URL}/community/${article.id}`, article.id, requestHeaders)
       .then(res => {
         console.log(res)
+        this.$router.push({
+        name: "ArticleDetail",
+        params: {
+          id: movie.id,
+          // selectedMovie: x,
+        }
+        });
+
         // this.articles = res.data
       })
       .catch(err => {
