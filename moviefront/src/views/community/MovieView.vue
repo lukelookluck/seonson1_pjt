@@ -4,6 +4,7 @@
     <!-- <button @click="getMovies">일단 눌러</button> -->
     <hr />
     <!-- {{list}} -->
+    
     <div
       v-for="(movie, $idx) in list"
       :key="$idx"
@@ -31,7 +32,6 @@
               <small class="text-muted">{{ movie.release_date.substring(0,4) }}</small>
             </p>
             <!-- {{ movies[$idx].like }} -->
-            <button @click="like(movie)">조아요</button>
 
             <!-- {{ window.getElementById('movie.title') }}asdas -->
             <b-input-group>
@@ -108,7 +108,14 @@ export default {
     };
   },
   created() {
-    
+    console.log("asd");
+    console.log("asdasd")
+    if (this.$cookies.isKey("auth-token")) {
+      this.isLogin = true;
+
+    } else {
+      this.$router.push("/accounts/login");
+    }
   },
   methods: {
     infiniteHandler($state) {

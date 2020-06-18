@@ -3,7 +3,7 @@
     <img alt="2" src="../../../src/assets/2.gif" />
     <img alt="1" src="../../../src/assets/1.gif" />
     <img alt="3" src="../../../src/assets/3.gif" />
-    <h1>Signup</h1>
+    <h1>회원가입</h1>
     <div class="text-left">
       <b-form @submit="signup" v-if="show">
         <b-form-group id="input-group-1" label="유저 이름:" label-for="input-1">

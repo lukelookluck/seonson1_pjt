@@ -50,17 +50,17 @@
 
 
     <div
-      class="modal fade"
+      class="hidden modal fade"
       id="exampleModal"
-      tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      data-backdrop="false"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalLabel">취향이 비슷한 사람이 본 영화</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -105,7 +105,6 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -123,6 +122,7 @@ const BACK_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "MovieRecommandView",
+  
   props: {
     recomand_movies: Array,
     recomand_movies2: Array
@@ -140,9 +140,6 @@ export default {
       page: 0 ,
       list: [],
     };
-  },
-  created() {
-    console.log("asd");
   },
   methods: {
     infiniteHandler($state) {

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h2>검색기능 구현해 말아?</h2>
     <!-- <div id="nav"> -->
     <!-- <router-link to="/">홈</router-link>| -->
     <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
@@ -11,7 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="isLogin">
           <b-nav-item href="#" @click="logout">로그아웃</b-nav-item>
-          <!-- <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item> -->
+          <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item>
           <b-nav-item href="#" to="/">영화 평가하기</b-nav-item>
           <b-nav-item to="/recomand/">취향분석</b-nav-item>
         </b-navbar-nav>
@@ -132,11 +131,11 @@ export default {
     } else {
       this.isLogin = false;
       this.username = "게스트";
-      this.$router.push("/accounts/first");
+      this.$router.push("/accounts/login");
     }
-    this.data_load;
-    this.recomand();
-    this.recomand2();
+    // this.data_load;
+    // this.recomand();
+    // this.recomand2();
   },
   methods: {
     data_load($state) {
@@ -176,12 +175,11 @@ export default {
               Authorization: `Token ${this.$cookies.get("auth-token")}`
             }
           };
-          axios.get(`${BACK_URL}/rest-auth/user/`, requestHeaders)
-          .then(res => {
-            console.log("damslkdnaslkdnkasj", res.data.username)
-            this.username = res.data.username
-            console.log(this.username)
-          })
+          axios.get(`${BACK_URL}/rest-auth/user/`, requestHeaders).then(res => {
+            console.log("damslkdnaslkdnkasj", res.data.username);
+            this.username = res.data.username;
+            console.log(this.username);
+          });
         })
         .catch(err => {
           console.error(err.response);
@@ -224,6 +222,7 @@ export default {
         });
     },
     create(articleData) {
+      console.log(articleData);
       const reqeustHeaders = {
         headers: {
           Authorization: `Token ${this.$cookies.get("auth-token")}`
@@ -232,7 +231,14 @@ export default {
       axios
         .post(`${BACK_URL}/community/create/`, articleData, reqeustHeaders)
         .then(res => {
-          this.$router.push({ name: "ArticleListView" });
+          this.$router.push({
+            name: "MovieDetailView",
+            params: {
+              id: articleData.id,
+              // selectedMovie: articleData
+              // selectedMovie: x,
+            }
+          });
           console.log(res.data);
         })
         .catch(err => {
@@ -397,24 +403,23 @@ export default {
       this.$router.push({
         name: "MovieDetailView",
         params: {
-          id: movie.id,
-          selectedMovie: movie
-          // selectedMovie: x,
+          movie: movie.id,
+          // selectedMovie: movie
         }
       });
     },
     createComment(commentData) {
+      this.commentData = commentData
+      // console.log(this.commentData.article_id)
+      // console.log(commentData)
+      // console.log(this.commentData)
       const reqeustHeaders = {
         headers: {
           Authorization: `Token ${this.$cookies.get("auth-token")}`
         }
       };
       axios
-        .post(
-          `${BACK_URL}/community/comment_create/`,
-          commentData,
-          reqeustHeaders
-        )
+        .post(`${BACK_URL}/community/${this.commentData.article}/comment_create/`, commentData, reqeustHeaders)
         .then(res => {
           this.$router.push({ name: "ArticleDetail" });
           console.log(res.data);
@@ -423,6 +428,7 @@ export default {
           console.log(err.response.data);
         });
     }
+
   }
 };
 </script>
