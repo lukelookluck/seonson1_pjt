@@ -10,6 +10,7 @@
           <!-- <b-nav-item href="#" to="/community/create">게시글 작성</b-nav-item> -->
           <b-nav-item href="#" to="/">영화 평가하기</b-nav-item>
           <b-nav-item to="/recomand/">취향분석</b-nav-item>
+          <b-nav-item to="/movie/MovieDataInsert/">asdad</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-else>
@@ -389,6 +390,7 @@ export default {
         .then(res => {
           console.log(res);
           this.selected_article = res.data;
+          console.log(this.selected_article)
           axios
             .get(`${BACK_URL}/movies/get_value/${article.user}/${movie.id}`, article, requestHeaders)
             .then(res => {

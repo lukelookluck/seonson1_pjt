@@ -20,6 +20,11 @@ Vue.use(VueRouter)
 
   const routes = [
   {
+    path: '/movie/MovieDataInsert',
+    name: 'MovieDataInsert',
+    component: MovieDataInsert
+  },
+  {
     path: '/accounts/signup',
     name: 'SignupView',
     component: SignupView
@@ -48,11 +53,6 @@ Vue.use(VueRouter)
     path: '/movie/:movie',
     name: 'MovieDetailView',
     component: MovieDetailView
-  },
-  {
-    path: '/movie/MovieDataInsert',
-    name: 'MovieDataInsert',
-    component: MovieDataInsert
   },
   {
     path: '/accounts/first',

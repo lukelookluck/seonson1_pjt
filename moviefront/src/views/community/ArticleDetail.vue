@@ -1,6 +1,6 @@
 <template>
-  <div class="mb-5">
-    <div class="container">
+  <div class=" ">
+    <div class="container bg-white" id="articlediv">
       <section class="boader mt-5">
         <hr />
         <div class="text-left">
@@ -34,7 +34,7 @@
         
       </div>
     </div>
-    <div id="comment-form" class="px-5 text-left py-3">
+    <div id="comment-form" class="px-5  text-left py-3">
       <h5>댓글 작성</h5>
       <b-form class="d-flex" @button="createComment" >
           <b-form-input 
@@ -44,7 +44,7 @@
             placeholder="댓글쓰기"
             required
             v-model="content2"
-            style="width: 860px;"
+            style="width: 94%;"
           ></b-form-input>
         <b-button type="submit" variant="success" class="text-sm" style="height: 38px;" @click="createComment" >작성</b-button> 
       </b-form>
@@ -98,10 +98,14 @@ export default {
 <style>
 #comment-form {
   position: fixed;
-  /* width: 100%; */
+  width: 100%;
   margin: auto;
   padding: auto;
   bottom: 0px;
   background-color: white;
+}
+
+#articlediv {
+  /* padding-bottom: 0%; */
 }
 </style>

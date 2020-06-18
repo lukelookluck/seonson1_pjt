@@ -1,3 +1,4 @@
+
 <template>
   <div class="container" style="position: relative;">
     
@@ -17,8 +18,8 @@
         >ㆍ{{ genre.name }}</span>
       </h5>
     </div>
-    <div style="position: relative; top: -350px;">
-      <section class="border">
+    <div class="bg-white" style="position: relative; top: -350px;">
+      <section class="border ">
         <div class="container">
           <b-input-group>
             <b-form-rating
@@ -44,7 +45,7 @@
       </section>
       <section class="border mt-3">
         <div class="overflow-auto container">
-          <button @click="goAticleForm">글쓰기</button>
+          <b-button variant="outline-success"  id="likebutton" size="sm"  @click="goAticleForm">글쓰기</b-button>
           <hr>
           <b-table
             :items="pageArticles"
@@ -87,7 +88,7 @@ export default {
     return {
       selectMovie: null,
       newValue: {
-        a: this.selected_movie.like.length,
+        // a: this.selected_movie.like.length,
         b: false
       },
       poster: null,
