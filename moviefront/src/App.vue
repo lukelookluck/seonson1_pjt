@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <!-- <h2>검색기능 구현해 말아?</h2> -->
-    <!-- <div id="nav"> -->
-    <!-- <router-link to="/">홈</router-link>| -->
-    <!-- <router-link to="/movie/MovieDataInsert">무비데이터 수집</router-link> | -->
     <b-navbar toggleable="lg" type="light" variant="warning  ">
       <b-navbar-brand to="/">지녀비와 거누의 영화 추천 사이트</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -27,14 +23,6 @@
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
-
-          <!-- <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">ES</b-dropdown-item>
-            <b-dropdown-item href="#">RU</b-dropdown-item>
-            <b-dropdown-item href="#">FA</b-dropdown-item>
-          </b-nav-item-dropdown>-->
-
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
@@ -47,20 +35,9 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <!-- <div id="nav">
-      <span v-if="isLogin">
-        <router-link to="/">홈</router-link>|
-        <router-link to="/accounts/logout" @click.native="logout">로그아웃</router-link>|
-        <router-link to="/community/create">게시글 작성</router-link>|
-        <router-link to="/">영화 평가하기</router-link>|
-        <router-link to="/movie/recomand">취향분석</router-link>|
-      </span>
-      <span v-else>
-        <router-link to="/accounts/login">로그인</router-link>|
-        <router-link to="/accounts/signup">회원가입</router-link>|
-      </span>
-    </div>-->
     <router-view
+      :article="$route.fullPath"
+      :movie="$route.fullPath"
       @data-load="data_load"
       :articles="articles"
       :selected_movie="selected_movie"
@@ -233,14 +210,15 @@ export default {
       axios
         .post(`${BACK_URL}/community/create/`, articleData, reqeustHeaders)
         .then(res => {
-          this.$router.push({
-            name: "MovieDetailView",
-            params: {
-              id: articleData.id,
-              // selectedMovie: articleData
-              // selectedMovie: x,
-            }
-          });
+          this.router.go(-1)
+          // this.$router.push({
+          //   name: "MovieDetailView",
+          //   params: {
+          //     id: articleData.id
+          //     // selectedMovie: articleData
+          //     // selectedMovie: x,
+          //   }
+          // });
           console.log(res.data);
         })
         .catch(err => {
@@ -405,15 +383,15 @@ export default {
       this.$router.push({
         name: "MovieDetailView",
         params: {
-          movie: movie.id,
+          movie: movie.id
           // selectedMovie: movie
         }
       });
     },
     createComment(commentData) {
-      this.commentData = commentData
+      this.commentData = commentData;
       // console.log(this.commentData.article_id)
-      // console.log(commentData)
+      console.log(commentData);
       // console.log(this.commentData)
       const reqeustHeaders = {
         headers: {
@@ -421,16 +399,26 @@ export default {
         }
       };
       axios
-        .post(`${BACK_URL}/community/${this.commentData.article}/comment_create/`, commentData, reqeustHeaders)
+        .post(
+          `${BACK_URL}/community/${this.commentData.article}/comment_create/`,
+          commentData,
+          reqeustHeaders
+        )
         .then(res => {
-          this.$router.push({ name: "ArticleDetail" });
+          // this.$router.push({ name: "ArticleDetail" });
           console.log(res.data);
         })
         .catch(err => {
           console.log(err.response.data);
         });
+        this.$router.push({
+          name: "ArticleDetail",
+          params: {
+            movie: commentData.movie,
+            article: commentData.article,
+          }
+        });
     }
-
   }
 };
 </script>

@@ -42,46 +42,8 @@
           <span>{{ selected_movie.overview }}</span>
         </div>
       </section>
-
-<<<<<<< HEAD
-    <section class="border">
-      <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
-      <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
-      <!-- {{ articles }} -->
-      <div class="overflow-auto container mb-5">
-        <!-- <ul>
-          <li v-for="article in articles" :key="article.id">{{ article }}</li>
-        </ul> -->
-        <b-table :items="pageArticles" fixed :per-page="perPage" :current-page="currentPage" hover>
-
-          <template v-slot:cell(title)="data">
-            <a href="#" @click="getArticle(selected_movie, data.item)">{{ data.item.title }}</a>
-          </template>
-        </b-table>
-        <hr />
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="rows"
-          :per-page="perPage"
-          aria-controls="my-table"
-          align="center"
-        ></b-pagination>
-      </div>
-      
-    </section>
       <section class="border mt-3">
         <div class="overflow-auto container">
-=======
-      <section class="border">
-        <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
-        <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
-        <!-- {{ articles }} -->
-        <div class="overflow-auto container mb-5">
-          <!-- <ul>
-          <li v-for="article in articles" :key="article.id">{{ article }}</li>
-          </ul>-->
-          <button @click="goAticleForm">글쓰기</button>
->>>>>>> gunwoo
           <b-table
             :items="pageArticles"
             fixed

@@ -22,10 +22,6 @@
           <label>댓글 작성</label>
           <textarea class="form-control" placeholder="내용" rows="5" v-model="commentData.content"></textarea>
         </div>
-        <!-- <div class="form-group">
-          <label>게시글id값</label>
-          <input class="form-control" v-model="commentData.article">
-        </div> -->
         <button type="button" @click="createComment" class="btn btn-primary">작성하기</button>
       </form>
     </div>
@@ -43,10 +39,8 @@ export default {
     },
     data() {
       return {
-        // movie: null,
-        // article: null,
         commentData: {
-          // user: null,
+          movie: this.selected_movie.id,
           article: this.selected_article.id,
           content: null,
         }
@@ -64,18 +58,7 @@ export default {
     },
     methods: {
       createComment() {
-        // console.log(this.commentData.article_id)
-        // console.log(this.commentData)
         this.$emit("submit-comment-data", this.commentData)
-        // this.movie = this.selected_movie
-        // this.article = this.selected_article
-        // this.$router.push({
-        //   name: "ArticleDetail",
-        //   params: {
-        //     id: this.article.id,
-        //     // selectedMovie: x,
-        //   }
-        // })
       }
     }
 }
