@@ -12,6 +12,16 @@
         />
         <small id="titleHelp" class="form-text text-muted">영화와 관련된 자유로운 의견을 남겨주삼!!</small>
       </div>
+      <b-input-group>
+                <b-form-rating
+                  @change="rating(selected_movie)"
+                  v-model="selected_movie.rate_value"
+                  color="#ff8800"
+                  size="lg"
+                  required
+                  no-border
+                ></b-form-rating>
+              </b-input-group>
       <div class="form-group">
         <label>내용</label>
         <textarea class="form-control" placeholder="내용" rows="5" v-model="articleData.content"></textarea>
@@ -34,7 +44,13 @@ export default {
         title: null,
         content: null,
         movie: null,
-      }
+        uesrname: null,
+      },
+      rateData: {
+        user: null,
+        movie: null,
+        value: null
+      },
     };
   },
   created() {
@@ -43,6 +59,11 @@ export default {
     }
   },
   methods: {
+    rating(rateValue) {
+      this.rateData.movie = rateValue.id;
+      this.rateData.value = rateValue.rate_value;
+      this.$emit("submit-rate-value", this.rateData);
+    },
     create() {
       console.log(this.selectMovie)
       this.articleData.movie = this.selectMovie.id

@@ -9,7 +9,7 @@
               <h1>{{ selected_article.title }}</h1>
               <p>{{selected_movie.title}}ㆍ{{ selected_movie.release_date.substring(0,4) }}</p>
               <p>작성자: {{selected_article.uesrname}}</p>
-              <span>점수: {{selected_user[0].value}}</span>
+              <span v-if="selected_user">점수: {{selected_user[0].value}}</span>
             </div>
             <img
               id="poster2"

@@ -1,5 +1,6 @@
 <template>
  <div id="app">
+   {{selected_user}}
     <b-navbar id="my-nav" toggleable="lg" type="white" class="text-white">
       <b-navbar-brand to="/">지녀비와 거누의 영화 추천 사이트</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -233,6 +234,7 @@ export default {
           Authorization: `Token ${this.$cookies.get("auth-token")}`
         }
       };
+      articleData.uesrname = this.username
       axios
         .post(`${BACK_URL}/community/create/`, articleData, reqeustHeaders)
         .then(res => {
@@ -394,7 +396,7 @@ export default {
           axios
             .get(`${BACK_URL}/movies/get_value/${article.user}/${movie.id}`, article, requestHeaders)
             .then(res => {
-              console.log(res);
+              console.log("get_value", res);
               this.selected_user = res.data;
               axios
                 .get(
