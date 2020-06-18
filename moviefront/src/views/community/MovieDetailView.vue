@@ -44,6 +44,8 @@
       </section>
       <section class="border mt-3">
         <div class="overflow-auto container">
+          <button @click="goAticleForm">글쓰기</button>
+          <hr>
           <b-table
             :items="pageArticles"
             fixed
