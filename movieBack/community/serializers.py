@@ -2,6 +2,14 @@ from rest_framework import serializers
 from .models import Article, Comment
 
 
+class ArticleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Article
+        fields = '__all__'
+        read_only_fields = ('id', 'user', 'DISLIKE', 'LIKE' )    
+
+        
 class ArticleListSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -9,12 +17,6 @@ class ArticleListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'content', 'user', )
 
 
-class ArticleSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Article
-        fields = '__all__'
-        read_only_fields = ('id', 'user', 'created_at', 'updated_at', 'DISLIKE', 'LIKE' , )    
 
 
 class CommentSerializer(serializers.ModelSerializer):

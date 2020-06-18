@@ -18,9 +18,11 @@ def movie_articles_list(request, movie_pk):
 
 @api_view(['GET'])
 def detail(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
+    print(article_pk)
+    article = Article.objects.get(id=article_pk)
+    print(article)
     serializer = ArticleSerializer(article)
-    print(serializer)
+    print("ASDASDASDAS", serializer)
     return Response(serializer.data)
 
 
