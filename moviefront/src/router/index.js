@@ -35,7 +35,7 @@ Vue.use(VueRouter)
     component: ArticleCreateView
   },
   {
-    path: '/asdasda',
+    path: '/movie/id',
     name: 'ArticleListView',
     component: ArticleListView
   },
@@ -45,7 +45,7 @@ Vue.use(VueRouter)
     component: MovieView
   },
   {
-    path: '/movie/:id',
+    path: '/movie/:movie',
     name: 'MovieDetailView',
     component: MovieDetailView
   },

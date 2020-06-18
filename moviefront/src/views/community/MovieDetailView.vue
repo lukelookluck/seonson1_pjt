@@ -1,5 +1,6 @@
 <template>
   <div class="container" style="position: relative;">
+    
     <img
       id="poster1"
       :src="'https://image.tmdb.org/t/p/original/'+ selected_movie.backdrop_path"
@@ -29,22 +30,20 @@
             ></b-form-rating>
           </b-input-group>
         </div>
-        <b-button
-          variant="outline-success"
-          @click="like(selected_movie)"
-          id="likebutton"
-          size="sm"
-        >조아요</b-button>
-        <hr>
+        <span></span>
+        <b-button variant="outline-success" @click="like(selected_movie)" id="likebutton" size="sm" >
+          조아요
+          <b-badge variant="light">{{ newValue.a }}</b-badge>
+        </b-button>
+
+        <hr />
         <div class="text-left m-4">
           <h3 class="my-4">기본정보</h3>
-          <span>
-            {{ selected_movie.overview }}
-          </span>
+          <span>{{ selected_movie.overview }}</span>
         </div>
-        {{ articles }}
       </section>
 
+<<<<<<< HEAD
     <section class="border">
       <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
       <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
@@ -72,6 +71,17 @@
     </section>
       <section class="border mt-3">
         <div class="overflow-auto container">
+=======
+      <section class="border">
+        <!-- <h1>글작성 2~3개 보여주고 더보기 -> 이 영화의 전체 커뮤니티</h1> -->
+        <!-- <button @click="getMovieArticles(selected_movie)">게시글 불러오기</button> -->
+        <!-- {{ articles }} -->
+        <div class="overflow-auto container mb-5">
+          <!-- <ul>
+          <li v-for="article in articles" :key="article.id">{{ article }}</li>
+          </ul>-->
+          <button @click="goAticleForm">글쓰기</button>
+>>>>>>> gunwoo
           <b-table
             :items="pageArticles"
             fixed
@@ -92,7 +102,6 @@
             align="center"
           ></b-pagination>
         </div>
-        <a href="#">더 보기</a>
       </section>
     </div>
   </div>
@@ -112,15 +121,20 @@ export default {
   },
   data() {
     return {
+      selectMovie: null,
+      newValue: {
+        a: this.selected_movie.like.length,
+        b: false
+      },
       poster: null,
       poster2: null,
       genres: [],
-      perPage: 3  ,
+      perPage: 3,
       currentPage: 1,
       rateData: {
         user: null,
         movie: null,
-        value: this.selected_movie.rated_movie[0].value
+        // value: this.selected_movie.rated_movie[0].value
       },
       likeData: {
         id: null,
@@ -148,6 +162,15 @@ export default {
     }
   },
   methods: {
+    goAticleForm() {
+      this.$router.push("/community/create", {
+        params: {
+          id: this.selected_movie.id,
+          selectedMovie: this.selected_movie
+          // selectedMovie: x,
+        }
+      });
+    },
     getMovieDetail() {
       axios
         .get(`${IMG_URL}${this.selected_movie.backdrop_path}`)
@@ -173,9 +196,16 @@ export default {
       // console.log(this.rateData);
       this.$emit("submit-rate-value", this.rateData);
     },
-    like(movie) {
-      this.likeData.id = movie.id;
-      this.newValue++;
+    like(a) {
+      console.log(a);
+      this.likeData.id = a.id;
+      if (this.newValue.b === false) {
+        this.newValue.a++;
+        this.newValue.b = true;
+      } else {
+        this.newValue.a--;
+        this.newValue.b = false;
+      }
       this.$emit("submit-like-movie", this.likeData);
     }
   }

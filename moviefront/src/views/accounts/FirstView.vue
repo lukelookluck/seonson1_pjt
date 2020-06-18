@@ -30,6 +30,12 @@
 </template>
 
 <script>
+// import axios from "axios";
+// import Vue from 'vue'
+// import MovieDetailView from './views/community/MovieDetailView.vue'
+
+// const BACK_URL = "http://127.0.0.1:8000";
+
 export default {
   name: "FirstView",
   data() {

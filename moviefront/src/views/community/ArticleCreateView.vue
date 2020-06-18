@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>커뮤니티 - 수정 필요</h1>
+    <h1>{{ selected_movie.title }}에 대한 게시글 작성</h1>
     <form class="text-left">
       <div class="form-group">
         <label>제목</label>
@@ -16,10 +16,6 @@
         <label>내용</label>
         <textarea class="form-control" placeholder="내용" rows="5" v-model="articleData.content"></textarea>
       </div>
-      <div class="form-group">
-        <label>영화id값</label>
-        <input class="form-control" v-model="articleData.movie">
-      </div>
       <button type="button" @click="create" class="btn btn-primary">작성하기</button>
     </form>
   </div>
@@ -28,8 +24,12 @@
 <script>
 export default {
   name: "Create",
+  props: {
+    selected_movie: Object,
+  },
   data() {
     return {
+      selectMovie: this.selected_movie,
       articleData: {
         title: null,
         content: null,
@@ -44,6 +44,9 @@ export default {
   },
   methods: {
     create() {
+      console.log(this.selectMovie)
+      this.articleData.movie = this.selectMovie.id
+      console.log(this.articleData)
       this.$emit("submit-article-data", this.articleData);
     }
   }

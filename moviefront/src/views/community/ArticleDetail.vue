@@ -17,16 +17,6 @@
       </ul>
       <!-- {{ comments }} -->
       <form class="text-left">
-        <!-- <div class="form-group">
-          <label>제목</label>
-          <input
-            class="form-control"
-            aria-describedby="titleHelp"
-            placeholder="제목"
-            v-model="articleData.title"
-          />
-          <small id="titleHelp" class="form-text text-muted">영화와 관련된 자유로운 의견을 남겨주삼!!</small>
-        </div> -->
         
         <div class="form-group mb-5">
           <label>댓글 작성</label>
