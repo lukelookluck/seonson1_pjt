@@ -55,6 +55,7 @@ export default {
         password1: null,
         password2: null
       },
+      
       show: true
     };
   },

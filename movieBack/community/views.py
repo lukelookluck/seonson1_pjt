@@ -20,6 +20,7 @@ def movie_articles_list(request, movie_pk):
 def detail(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     serializer = ArticleSerializer(article)
+    print(serializer)
     return Response(serializer.data)
 
 
@@ -27,7 +28,7 @@ def detail(request, article_pk):
 @api_view(['GET'])
 def article_comments(request, movie_pk, article_pk):
     print("아")
-    comments = Comment.objects.filter(article=article_pk)
+    comments = Comment.objects.filter(article=article_pk).order_by('-pk')
     print(comments)
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
@@ -62,7 +63,8 @@ def create(request):
 def comment_create(request, article_pk):
     print(request.user)
     serializer = CommentSerializer(data=request.data)
-    print(request.data)
+    print(serializer)
+
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data)

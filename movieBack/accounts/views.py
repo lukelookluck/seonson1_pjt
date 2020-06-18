@@ -25,6 +25,7 @@ def like(request):
 def get_username(request):
 	print(request.user.id)
 	user = get_object_or_404(User, pk=request.user.id)
+	print(user)
 	print(user.password)
 	# serializer = UserSerializer(user, many=True)
 	return Response(user.username)

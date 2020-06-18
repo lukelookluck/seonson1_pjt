@@ -121,3 +121,12 @@ def movie_recomand2(request):
 
     serializer = MovieSerializer(temp_movies, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_user_movie_rate_value(request, user_pk, movie_pk):
+    value = UserRateMovie.objects.filter(user=user_pk, movie=movie_pk).all()
+
+    print(value)
+    serializer = UserRateMovieSerializer(value, many=True)
+    return Response(serializer.data)
