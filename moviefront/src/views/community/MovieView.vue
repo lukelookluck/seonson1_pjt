@@ -30,10 +30,10 @@
         v-for="(movie, $idx) in list"
         :key="$idx"
         :movie="movie"
-        class="card mx-auto"
+        class="card mx-auto mb-2"
         style="max-width: 65%;"
       >
-        <div class="row no-gutters">
+        <div class="row no-gutters ">
           <div class="col-md-4">
             <a href="#" @click="detail(movie)">
               <img
@@ -61,9 +61,7 @@
                   size="lg"
                   no-border
                 ></b-form-rating>
-                <b-input-group-append>
-                  <b-input-group-text>{{ movie.rate_value }}</b-input-group-text>
-                </b-input-group-append>
+
               </b-input-group>
               <!-- <p class="card-text">{{ movie.overview }}</p> -->
             </div>

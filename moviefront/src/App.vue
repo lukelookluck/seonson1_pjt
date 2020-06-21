@@ -1,6 +1,5 @@
 <template>
  <div id="app">
-   {{selected_user}}
     <b-navbar id="my-nav" toggleable="lg" type="white" class="text-white">
       <b-navbar-brand to="/">지녀비와 거누의 영화 추천 사이트</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

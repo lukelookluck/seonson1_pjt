@@ -18,8 +18,8 @@
         >ㆍ{{ genre.name }}</span>
       </h5>
     </div>
-    <div class="bg-white" style="position: relative; top: -350px;">
-      <section class="border ">
+    <div class="" style="position: relative; top: -350px;">
+      <section class="border bg-white pt-3">
         <div class="container">
           <b-input-group>
             <b-form-rating
@@ -32,21 +32,21 @@
           </b-input-group>
         </div>
         <span></span>
-        <b-button variant="outline-success" @click="like(selected_movie)" id="likebutton" size="sm" >
+        <b-button class="my-3" variant="outline-success" @click="like(selected_movie)" id="likebutton" size="sm" >
           조아요
           <b-badge variant="light">{{ newValue.a }}</b-badge>
         </b-button>
 
-        <hr />
         <div class="text-left m-4">
           <h3 class="my-4">기본정보</h3>
           <span>{{ selected_movie.overview }}</span>
         </div>
       </section>
-      <section class="border mt-3">
-        <div class="overflow-auto container">
-          <b-button variant="outline-success"  id="likebutton" size="sm"  @click="goAticleForm">글쓰기</b-button>
-          <hr>
+      <div>
+        <b-button class="my-3 bg-" variant="outline-success"  id="likebutton" size="sm"  @click="goAticleForm">글쓰기</b-button>
+      </div>
+      <section class="border bg-white">
+        <div class="overflow-auto container ">
           <b-table
             :items="pageArticles"
             fixed
@@ -58,7 +58,6 @@
               <a href="#" @click="getArticle(selected_movie, data.item)">{{ data.item.title }}</a>
             </template>
           </b-table>
-          <hr />
           <b-pagination
             v-model="currentPage"
             :total-rows="rows"
@@ -88,7 +87,7 @@ export default {
     return {
       selectMovie: null,
       newValue: {
-        // a: this.selected_movie.like.length,
+        a: this.selected_movie.like.length,
         b: false
       },
       poster: null,

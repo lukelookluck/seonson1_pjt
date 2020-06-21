@@ -35,7 +35,7 @@
         v-for="movie in list"
         :key="movie.id"
         :recomand_movies="recomand_movies"
-        class="card mx-auto"
+        class="card mx-auto mb-2"
         style="max-width: 65%;"
       >
         <div class="row no-gutters">
